@@ -20,19 +20,13 @@ class Question extends React.Component {
   componentDidUpdate(prevProps) {
     // this won't loop infinitely since loadPostAndOptions only dispatches actions
     // when either an image doesn't exist or it's invalidated
-    // we don't just compare question.subreddit from prevProps to the one in
-    // props since it is possible that the same subreddit is chosen multiple times
-    // in a row
-
+    // we compare question only since our fetch conditions don't depend on isFetching
+    // or error
     const { dispatch } = this.props
     const { subreddit } = this.props.question
-    // NOTE: might not need that !imageUrl check, since it already checks it in the thunk
-    // i guess this stops us from dispatching a thunk, but it's really the same thing
-    // since no action object is actually dispatched if it shouldn't fetch
     if (prevProps.question != this.props.question) {
       dispatch(loadImageAndOptions(subreddit))
     }
-    // dispatch(loadPostAndOptions(subreddit))
   }
 
   handleRetry() {

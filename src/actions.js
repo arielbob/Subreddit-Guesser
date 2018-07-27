@@ -1,13 +1,12 @@
 export const RANDOM_SUBREDDIT = 'RANDOM_SUBREDDIT'
+export const INVALIDATE_IMAGE = 'INVALIDATE_IMAGE'
 export const FETCH_POSTS = 'FETCH_POSTS'
 export const FETCH_POSTS_FAIL = 'FETCH_POST_FAIL'
-export const RECEIVE_IMAGE = 'RECEIVE_IMAGE' // TODO: probably remove this
-export const INVALIDATE_IMAGE = 'INVALIDATE_IMAGE'
-export const SET_IMAGE = 'SET_IMAGE'
 export const RECEIVE_UNSEEN = 'RECEIVE_UNSEEN'
 
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 
+export const SET_IMAGE = 'SET_IMAGE'
 export const SET_OPTIONS = 'SET_OPTIONS'
 export const ADD_GUESS = 'ADD_GUESS'
 export const MAKE_GUESS = 'MAKE_GUESS'
@@ -46,8 +45,7 @@ const SUBREDDITS = [
 // TODO: add error handling, especially in the fetchImagePost function - DONE
 //  maybe do it so like if count > some big number, then err() or whatever it is in promises
 // TODO: clean up error handling for fetchImagePost and add string constants - DONE
-// TODO: go through TODO's in loadImageAndOptions() function
-// TODO: clean up loadImageAndOptions
+// TODO: go through TODO's in loadImageAndOptions() function - DONE
 // TODO: convert functions to arrow functions - DONE
 // TODO: remove unused constants, functions, etc.
 // TODO: maybe change the reddit api request to get from hot instead of new?
@@ -104,17 +102,6 @@ const setOptions = (subreddit) => ({
   type: SET_OPTIONS,
   options: generateOptions(subreddit, 5)
 })
-//
-// export function setOptions(subreddit) {
-//   return (dispatch, getState) => {
-//     if (!getState().isFetching) {
-//       return {
-//         type: SET_OPTIONS,
-//         options: generateOptions(subreddit, 5)
-//       }
-//     }
-//   }
-// }
 
 const addGuess = (guess) => ({
   type: ADD_GUESS,
@@ -182,17 +169,12 @@ const fetchPosts = () => ({
   type: FETCH_POSTS
 })
 
-const receiveImage = imageUrl => ({
-  type: RECEIVE_IMAGE,
-  imageUrl
-})
-
 export const invalidateImage = () => (dispatch, getState) => {
   if (!getState().isFetching) {
     dispatch({
       type: INVALIDATE_IMAGE
     })
-    }
+  }
 }
 
 export const resetErrorMessage = () => ({
@@ -299,7 +281,6 @@ export const loadImageAndOptions = (subreddit) => (dispatch, getState) => {
   if (shouldUpdateQuestion(getState())) {
     let cachedImages = getState().cachedImagesBySubreddit[subreddit]
     if (!cachedImages || !cachedImages.length) {
-      // TODO: rename all this so it actually makes sense...
       dispatch(fetchPosts())
       fetchUnseenPosts(subreddit, getState().history)
         .then(unseenPosts => {

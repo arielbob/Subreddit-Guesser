@@ -36,47 +36,6 @@ import {
 //   isFetching: false
 // }
 
-// state = {
-//   currentImage: 'http://www.imgur.com/blah.png',
-//   currentSubreddit: 'me_irl',
-//   score: 0,
-//   seenImages: ['http://www.imgur.com/hehe.png', ...],
-//   isFetching: false
-// }
-
-// function rootReducer(state = {
-//   currentImage: '',
-//   currentSubreddit: '',
-//   score: 0,
-//   seenImages: [],
-//   isFetching: false
-// }, action) {
-//   switch(action.type) {
-//     case CHANGE_SUBREDDIT:
-//       return Object.assign({}, state, { currentSubreddit: action.subreddit })
-//     default:
-//       return state
-//   }
-// }
-
-// function currentImage(state = '', action) {
-//   switch (action.type) {
-//     case RECEIVE_IMAGE:
-//       return action.imageUrl
-//     default:
-//       return state
-//   }
-// }
-//
-// function currentSubreddit(state = '', action) {
-//   switch (action.type) {
-//     case RANDOM_SUBREDDIT:
-//       return action.subreddit
-//     default:
-//       return state
-//   }
-// }
-
 function errorMessage(state = '', action) {
   const { type, error } = action
 
@@ -119,22 +78,6 @@ function question(state = initialQuestionState, action) {
       return state
   }
 }
-
-// TODO: replace RECEIVE_IMAGE in question() to SET_IMAGE
-// and maybe rename RECEIVE_IMAGE to RECEIVE_IMAGES
-// or maybe use something like SET_UNSEEN
-
-// loadAndSetImage(subreddit) {
-//   is the cachedImagesBySubreddit[subreddit].length == 0 ?
-//     // fetchUnseenImages dispatches fetchImage()
-//     fetchUnseenImages(subreddit).then((images) => {
-//       setUnseenPosts(subreddit, posts)
-//       dispatch(randomElem())
-//     })
-//   else {
-//     dispatch(setImage())
-//   }
-// }
 
 function cachedImagesBySubreddit(state = {}, action) {
   let newState;
