@@ -1,5 +1,6 @@
 export const RANDOM_SUBREDDIT = 'RANDOM_SUBREDDIT'
 export const FETCH_POSTS = 'FETCH_POSTS'
+export const FETCH_POSTS_FAIL = 'FETCH_POST_FAIL'
 export const RECEIVE_IMAGE = 'RECEIVE_IMAGE' // TODO: probably remove this
 export const INVALIDATE_IMAGE = 'INVALIDATE_IMAGE'
 export const SET_IMAGE = 'SET_IMAGE'
@@ -308,7 +309,7 @@ export const loadImageAndOptions = (subreddit) => (dispatch, getState) => {
         })
         .catch(err => {
           dispatch({
-            type: 'FETCH_POST_FAIL',
+            type: FETCH_POSTS_FAIL,
             error: `There was an error fetching images.. (${err.message})`
           })
         })
