@@ -47,8 +47,8 @@ const SUBREDDITS = [
 // TODO: clean up error handling for fetchImagePost and add string constants - DONE
 // TODO: go through TODO's in loadImageAndOptions() function - DONE
 // TODO: convert functions to arrow functions - DONE
-// TODO: remove unused constants, functions, etc.
-// TODO: maybe change the reddit api request to get from hot instead of new?
+// TODO: remove unused constants, functions, etc. - DONE
+// TODO: maybe change the reddit api request to get from hot instead of new? - DONE
 //  would maybe filter out some inappropriate posts... lol
 
 export const resetGame = () => (dispatch, getState) => {
@@ -181,8 +181,6 @@ export const resetErrorMessage = () => ({
   type: RESET_ERROR_MESSAGE
 })
 
-// REWRITE
-
 const shouldUpdateQuestion = state => {
   const { isFetching, errorMessage } = state
   let { imageUrl, isInvalidated } = state.question
@@ -204,10 +202,9 @@ const shouldUpdateQuestion = state => {
   }
 }
 
-// const imagePattern = /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|png|svg))/
 const imagePattern = /\.(jpe?g|png|gif)$/g
 const fetchUnseenPosts = (subreddit, history, limit = 50, after, numTries = 20) => {
-  return fetch(`https://www.reddit.com/r/${subreddit}/new/.json?limit=${limit}&after=${after}`)
+  return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}&after=${after}`)
     .then(res => {
       if (!res.ok) throw Error(`Error ${res.status}`)
       return res
@@ -215,9 +212,8 @@ const fetchUnseenPosts = (subreddit, history, limit = 50, after, numTries = 20) 
     .then(res => res.json())
     .then(json => {
       let posts = json.data.children.filter(post => {
-        let { over_18, ups, url } = post.data
-        // TODO: maybe revise these conditions; over_18 can be put in fetch url params
-        return imagePattern.test(url) && !over_18 && ups >= 0;
+        let { over_18, url } = post.data
+        return imagePattern.test(url) && !over_18;
       })
 
       const unseenPosts = posts.filter(post => {
@@ -229,7 +225,6 @@ const fetchUnseenPosts = (subreddit, history, limit = 50, after, numTries = 20) 
       if (unseenPosts.length) {
         return unseenPosts
       } else {
-        console.log('seen em all... trying again!')
         // if we didn't get any valid posts in the chunk we receive,
         // we search the next chunk which is delimited by the after property
         // the after property is the id of the last post of the chunk
