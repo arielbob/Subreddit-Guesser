@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
   selectRandomSubreddit,
-  // loadPostAndOptions
   loadImageAndOptions,
   resetErrorMessage
 } from '../actions'
@@ -10,6 +9,7 @@ import NextButton from './NextButton'
 import ResetButton from './ResetButton'
 import GuessOptionList from './GuessOptionList'
 import ErrorMessage from '../components/ErrorMessage'
+import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
   componentDidMount() {
@@ -47,11 +47,7 @@ class Question extends React.Component {
           <ErrorMessage message={error} onRetry={() => this.handleRetry()}/> :
           <div>
             {isFetching && <p>Loading...</p>}
-            <img src={imageUrl} style={{
-              height: '300px',
-              width: 'auto',
-              opacity: isFetching ? '0.5' : '1'
-            }}></img>
+            <QuestionImage imageUrl={imageUrl} isFetching={isFetching} />
             <NextButton />
             <ResetButton />
             <GuessOptionList />
