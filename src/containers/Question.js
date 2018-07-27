@@ -8,7 +8,6 @@ import {
 import NextButton from './NextButton'
 import ResetButton from './ResetButton'
 import GuessOptionList from './GuessOptionList'
-import ErrorMessage from '../components/ErrorMessage'
 import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
@@ -42,12 +41,11 @@ class Question extends React.Component {
     const { imageUrl, subreddit } = this.props.question
     return (
       <div>
+        <QuestionImage imageUrl={imageUrl} isFetching={isFetching} error={error} onRetryClick={() => this.handleRetry()} />
         {
-          error ?
-          <ErrorMessage message={error} onRetry={() => this.handleRetry()}/> :
+          error || isFetching ?
+          null :
           <div>
-            {isFetching && <p>Loading...</p>}
-            <QuestionImage imageUrl={imageUrl} isFetching={isFetching} />
             <NextButton />
             <ResetButton />
             <GuessOptionList />
