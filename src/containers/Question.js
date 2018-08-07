@@ -46,9 +46,8 @@ class Question extends React.Component {
           error || isFetching ?
           null :
           <div>
-            <NextButton />
-            <ResetButton />
             <GuessOptionList />
+            <ResetButton />
           </div>
         }
       </div>

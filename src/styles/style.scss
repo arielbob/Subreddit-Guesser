@@ -5,10 +5,21 @@
 body {
   background-color: rgb(47, 49, 64);
   text-align: center;
+  font-size: 16px;
+}
+
+h2 {
+  margin: 0.5rem 0;
 }
 
 ul {
   list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  border: none;
 }
 
 .question-image {
@@ -17,7 +28,7 @@ ul {
   background-color: #ffffff;
   padding: 10px;
   border-radius: 5px;
-  margin: 5px;
+  margin-bottom: 0.5rem;
   &--placeholder {
     width: 400px;
     height: 300px;
@@ -56,4 +67,22 @@ ul {
 	100% {
 		background-position: 500px 0;
 	}
+}
+
+.options {
+  margin-bottom: 0.5rem;
+  &__option {
+    display: inline-block;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+  &__btn {
+    line-height: 1.5rem;
+  }
+}
+
+.reset-btn {
+  line-height: 1.5rem;
+  margin-bottom: 0.5rem;
 }

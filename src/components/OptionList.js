@@ -5,11 +5,11 @@ const OptionList = ({ options, isVisible, onClick }) => {
     <div>
       {
         isVisible &&
-        <ul>
+        <ul className='options'>
           {options.map((option, idx) => {
             return (
-              <li key={idx}>
-                <button value={option} onClick={(e) => onClick(e.target.value)}>{option}</button>
+              <li key={idx} className='options__option'>
+                <button className='options__btn' value={option} onClick={(e) => onClick(e.target.value)}>{option}</button>
               </li>
             )
           })}
