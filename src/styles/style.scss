@@ -18,6 +18,10 @@ ul {
   padding: 0;
 }
 
+li {
+  text-align: left;
+}
+
 button {
   border: none;
 }
@@ -25,14 +29,37 @@ button {
 .game-container {
   margin: 0 auto;
   display: grid;
-  width: 600px;
+  width: 750px;
   grid-template-columns: 30% 70%;
+  grid-column-gap: 0.5rem;
+}
+
+.question-history {
+  background-color: #fff;
+  height: 400px;
+  border-radius: 5px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .question-card {
+  display: flex;
+  //TODO: probably make these dimensions smaller..
   &__image {
     max-width: 100px;
     max-height: 100px;
+  }
+  &__subreddit {
+
+  }
+  &__guess {
+    margin-bottom: 0;
+  }
+  &--correct {
+    background-color: rgb(103, 196, 115)
+  }
+  &--incorrect {
+    background-color: rgb(224, 109, 109)
   }
 }
 
@@ -70,7 +97,6 @@ button {
   &__image {
     max-height: 300px;
     width: auto;
-    max-width: 100%;
     vertical-align: middle;
   }
 }

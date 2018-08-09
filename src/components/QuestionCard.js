@@ -5,14 +5,18 @@ const QuestionCard = ({
   subreddit,
   guess,
   index
-}) => (
-  <div className='question-card'>
-    <img className='question-card__image' src={imageUrl}></img>
-    <div>
-      <h3>{subreddit + (subreddit == guess ? '✔️' : '❌')}</h3>
-      <p>Guess: {guess}</p>
+}) => {
+  const isCorrect = subreddit == guess
+
+  return (
+    <div className={'question-card ' + (isCorrect ? 'question-card--correct' : 'question-card--incorrect')}>
+      <img className='question-card__image' src={imageUrl}></img>
+      <div>
+        <h3 className='question-card__subreddit'>{subreddit + (subreddit == guess ? '✔️' : '❌')}</h3>
+        <p className='question-card__guess'>Guess: {guess}</p>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default QuestionCard

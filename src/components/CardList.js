@@ -2,7 +2,7 @@ import React from 'react'
 import QuestionCard from './QuestionCard'
 
 const CardList = ({ history }) => (
-  <div>
+  <div className='question-history'>
     {
       history.length > 0 &&
       <ul>
