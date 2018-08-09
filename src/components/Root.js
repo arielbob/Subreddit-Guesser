@@ -9,15 +9,17 @@ import {
 } from '../actions'
 import Question from '../containers/Question'
 import Score from '../containers/Score'
-import QuestionHistory from '../containers/QuestionHistory'
+import HistoryCardList from '../containers/HistoryCardList'
 import ResultToast from '../containers/ResultToast'
 
 const Root = () => (
   <div>
     <ResultToast />
     <Score />
-    <Question />
-    <QuestionHistory />
+    <div className='game-container'>
+      <HistoryCardList />
+      <Question />
+    </div>
   </div>
 )
 

@@ -22,6 +22,20 @@ button {
   border: none;
 }
 
+.game-container {
+  margin: 0 auto;
+  display: grid;
+  width: 600px;
+  grid-template-columns: 30% 70%;
+}
+
+.question-card {
+  &__image {
+    max-width: 100px;
+    max-height: 100px;
+  }
+}
+
 .question-image {
   display: inline-block;
   position: relative;
@@ -54,8 +68,9 @@ button {
     z-index: 10;
   }
   &__image {
-    height: 300px;
+    max-height: 300px;
     width: auto;
+    max-width: 100%;
     vertical-align: middle;
   }
 }
