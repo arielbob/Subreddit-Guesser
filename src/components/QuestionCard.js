@@ -12,8 +12,10 @@ const QuestionCard = ({
     <div className={'question-card ' + (isCorrect ? 'question-card--correct' : 'question-card--incorrect')}>
       <img className='question-card__image' src={imageUrl}></img>
       <div>
-        <h3 className='question-card__subreddit'>{subreddit + (subreddit == guess ? '✔️' : '❌')}</h3>
-        <p className='question-card__guess'>Guess: {guess}</p>
+        <p className='question-card__title'>Subreddit</p>
+        <p className='question-card__subreddit'>/r/{subreddit}</p>
+        <p className='question-card__title'>Guess</p>
+        <p className='question-card__guess'>/r/{guess}</p>
       </div>
     </div>
   )

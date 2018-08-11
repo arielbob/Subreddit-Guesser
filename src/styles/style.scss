@@ -36,8 +36,8 @@ button {
 .game-container {
   margin: 0 auto;
   display: grid;
-  width: 750px;
-  grid-template-columns: 30% 70%;
+  width: 825px;
+  grid-template-columns: 35% 65%;
   grid-column-gap: 0.5rem;
   &__history-title, &__question-title {
     color: #fff;
@@ -60,26 +60,52 @@ button {
     overflow-y: scroll;
     background-color: #fff;
   }
+  &__item:nth-child(even) {
+    background-color: #eeeeee;
+  }
+  &__item:nth-child(odd) {
+    background-color: #fff;
+  }
 }
 
 .question-card {
   display: flex;
+  padding: 0.5rem;
   //TODO: probably make these dimensions smaller..
   &__image {
-    max-width: 100%;
-    max-height: 100px;
+    align-self: center;
+    height: auto;
+    max-width: 60px;
+    margin-right: 0.5rem;
+    border-radius: 3px;
+  }
+  &__title {
+    color: #535353;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75em;
+    line-height: 1em;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+  &__subreddit, &__guess {
+    font-size: 1em;
+    margin: 0;
   }
   &__subreddit {
-
+    margin-bottom: 0.5em;
   }
   &__guess {
-    margin-bottom: 0;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 15px;
+      text-transform: lowercase;
   }
-  &--correct {
-    background-color: rgb(103, 196, 115)
+  &--correct &__guess {
+    background-color: #06c725;
   }
-  &--incorrect {
-    background-color: rgb(224, 109, 109)
+  &--incorrect &__guess {
+    background-color: #ec3c3c;
   }
 }
 
