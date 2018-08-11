@@ -3,6 +3,7 @@ import QuestionCard from './QuestionCard'
 
 const CardList = ({ history }) => (
   <div className='question-history'>
+    <h2>Question History</h2>
     {
       history.length > 0 &&
       <ul>

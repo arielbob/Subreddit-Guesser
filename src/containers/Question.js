@@ -40,7 +40,7 @@ class Question extends React.Component {
     const { dispatch, isFetching, error } = this.props
     const { imageUrl, subreddit } = this.props.question
     return (
-      <div>
+      <div className='question'>
         <QuestionImage imageUrl={imageUrl} isFetching={isFetching} error={error} onRetryClick={() => this.handleRetry()} />
         {
           error || isFetching ?
