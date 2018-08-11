@@ -68,11 +68,13 @@ button {
   }
 }
 
+// TODO: make it so retry button changes the subreddit so that it can
+// actually possibly fix itself
+// TODO: also fix whatever happens when you hit reset when there's an error
 .question-card {
   display: flex;
   padding: 0.5rem;
   justify-content: space-between;
-  //TODO: probably make these dimensions smaller..
   &__image {
     align-self: center;
     height: auto;
@@ -82,6 +84,7 @@ button {
   }
   &__info {
     text-align: right;
+    max-width: 160px;
   }
   &__title {
     color: #535353;
@@ -95,16 +98,18 @@ button {
   &__subreddit, &__guess {
     font-size: 1em;
     margin: 0;
+    word-wrap: break-word;
   }
   &__subreddit {
     margin-bottom: 0.5em;
   }
   &__guess {
-      color: #fff;
-      padding: 2px 8px;
-      border-radius: 15px;
-      text-transform: lowercase;
-      display: inline-block;
+    display: inline-block;
+    max-width: 100%;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 15px;
+    text-transform: lowercase;
   }
   &--correct &__guess {
     background-color: #06c725;
