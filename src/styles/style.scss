@@ -36,7 +36,7 @@ button {
 .game-container {
   margin: 0 auto;
   display: grid;
-  width: 825px;
+  width: 750px;
   grid-template-columns: 35% 65%;
   grid-column-gap: 0.5rem;
   &__history-title, &__question-title {
@@ -71,6 +71,7 @@ button {
 .question-card {
   display: flex;
   padding: 0.5rem;
+  justify-content: space-between;
   //TODO: probably make these dimensions smaller..
   &__image {
     align-self: center;
@@ -78,6 +79,9 @@ button {
     max-width: 60px;
     margin-right: 0.5rem;
     border-radius: 3px;
+  }
+  &__info {
+    text-align: right;
   }
   &__title {
     color: #535353;
@@ -100,6 +104,7 @@ button {
       padding: 2px 8px;
       border-radius: 15px;
       text-transform: lowercase;
+      display: inline-block;
   }
   &--correct &__guess {
     background-color: #06c725;
@@ -174,6 +179,7 @@ button {
     padding: 0 0.5em;
     border-radius: 2px;
     line-height: 2rem;
+    margin-bottom: 0.5rem;
   }
 }
 

@@ -11,7 +11,7 @@ const QuestionCard = ({
   return (
     <div className={'question-card ' + (isCorrect ? 'question-card--correct' : 'question-card--incorrect')}>
       <img className='question-card__image' src={imageUrl}></img>
-      <div>
+      <div className='question-card__info'>
         <p className='question-card__title'>Subreddit</p>
         <p className='question-card__subreddit'>/r/{subreddit}</p>
         <p className='question-card__title'>Guess</p>
