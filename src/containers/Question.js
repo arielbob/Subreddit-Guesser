@@ -6,7 +6,6 @@ import {
   resetErrorMessage
 } from '../actions'
 import NextButton from './NextButton'
-import ResetButton from './ResetButton'
 import GuessOptionList from './GuessOptionList'
 import QuestionImage from '../components/QuestionImage'
 
@@ -47,7 +46,6 @@ class Question extends React.Component {
           null :
           <div>
             <GuessOptionList />
-            <ResetButton />
           </div>
         }
       </div>
