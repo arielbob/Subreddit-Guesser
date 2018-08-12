@@ -22,8 +22,13 @@ export const HIDE_TOAST = 'HIDE_TOAST'
 export const RESET_GAME = 'RESET_GAME'
 
 const SUBREDDITS = [
-  'asdjke',
-  'pics'
+  'me_irl',
+  'pics',
+  'me_irl',
+  'oldschoolcool',
+  'designporn',
+  'malefashion',
+  'earthporn'
 ]
 
 // TODO: implement guessing                             - DONE
@@ -69,6 +74,8 @@ export const selectRandomSubreddit = () => (dispatch, getState) => {
 }
 
 const generateOptions = (subreddit, numOptions) => {
+  if (numOptions > SUBREDDITS.length) numOptions = SUBREDDITS.length
+
   let removeStr = (str) => (elem) => elem != str
   let options = []
   let subreddits = SUBREDDITS.filter(removeStr(subreddit))  // get new subreddit list without the correct subreddit
