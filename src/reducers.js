@@ -39,11 +39,13 @@ import {
 function errorMessage(state = '', action) {
   const { type, error } = action
 
-  if (action.type == RESET_ERROR_MESSAGE) return ''
-
-  if (action.error) {
-    return action.error
+  switch (type) {
+    case RESET_ERROR_MESSAGE:
+    case RESET_GAME:
+      return ''
   }
+
+  if (error) return error
 
   return state
 }

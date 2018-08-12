@@ -6,7 +6,7 @@ import ErrorMessage from './ErrorMessage'
 
 const QuestionImage = ({ imageUrl, isFetching, error, onRetryClick }) => {
   return (
-    <div className={'question-image ' + (!imageUrl ? 'question-image--placeholder' : '')}>
+    <div className={'question-image ' + (!imageUrl && !error ? 'question-image--placeholder' : '')}>
       {
         error ?
         <ErrorMessage message={error} onRetry={onRetryClick} /> :

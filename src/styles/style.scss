@@ -68,9 +68,6 @@ button {
   }
 }
 
-// TODO: make it so retry button changes the subreddit so that it can
-// actually possibly fix itself
-// TODO: also fix whatever happens when you hit reset when there's an error
 .question-card {
   display: flex;
   padding: 0.5rem;
@@ -180,8 +177,8 @@ button {
     }
   }
   &__btn {
-    font-size: 1em;
-    padding: 0 0.5em;
+    font-size: 1rem;
+    padding: 0 0.5rem;
     border-radius: 3px;
     line-height: 2rem;
     margin-bottom: 0.5rem;
@@ -191,10 +188,27 @@ button {
 .reset {
   text-align: right;
   &__btn {
-    font-size: 1em;
+    font-size: 1rem;
     padding: 0 0.5em;
     border-radius: 3px;
     line-height: 1.5rem;
     margin-top: 0.5rem;
+  }
+}
+
+.error {
+  font-size: 1rem;
+  &__message {
+    font-size: inherit;
+    line-height: 1rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+  &__retry-btn {
+    font-size: inherit;
+    padding: 0 0.5em;
+    border-radius: 3px;
+    line-height: 1.5rem;
+    margin: 0;
   }
 }

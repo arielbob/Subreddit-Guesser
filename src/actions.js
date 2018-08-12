@@ -22,13 +22,8 @@ export const HIDE_TOAST = 'HIDE_TOAST'
 export const RESET_GAME = 'RESET_GAME'
 
 const SUBREDDITS = [
-  'me_irl',
-  'pics',
-  'me_irl',
-  'oldschoolcool',
-  'designporn',
-  'malefashion',
-  'earthporn'
+  'asdjke',
+  'pics'
 ]
 
 // TODO: implement guessing                             - DONE

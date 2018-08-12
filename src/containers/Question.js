@@ -32,7 +32,7 @@ class Question extends React.Component {
     const { subreddit } = this.props.question
 
     dispatch(resetErrorMessage())
-    dispatch(loadImageAndOptions(subreddit))
+    dispatch(selectRandomSubreddit())
   }
 
   render() {
