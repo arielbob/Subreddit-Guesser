@@ -7,7 +7,9 @@ import {
 
 const ResetButton = ({ handleResetClick }) => {
   return (
-    <button className='reset-btn' onClick={() => handleResetClick()}>Reset</button>
+    <div className='reset'>
+      <button className='reset__btn' onClick={() => handleResetClick()}>Reset</button>
+    </div>
   )
 }
 
