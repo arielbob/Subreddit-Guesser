@@ -3,7 +3,10 @@ import { connect } from 'react-redux'
 
 const Score = ({ score }) => {
   return (
-    <h2>{score}</h2>
+    <div className='score'>
+      <p className='score__title'>Score</p>
+      <p className='score__text'>{score}</p>
+    </div>
   )
 }
 
