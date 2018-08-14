@@ -6,7 +6,7 @@ $incorrect-red: #ec3c3c;
 }
 
 body {
-  background-color: rgb(47, 49, 64);
+  background-color: #2f3140;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
 }
@@ -150,6 +150,7 @@ button {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 0.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   &--placeholder {
     width: 400px;
     height: 300px;
@@ -201,10 +202,21 @@ button {
   }
   &__btn {
     font-size: 1rem;
-    padding: 0 0.5rem;
+    line-height: 1rem;
+    padding: 0.5rem;
     border-radius: 3px;
-    line-height: 2rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    background-color: #eed894;
+    box-shadow: 0 4px #daa849, 0 0 15px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.2s;
+    &:hover {
+      box-shadow: 0 4px #daa849;
+      background-color: #f5ecd1;
+    }
+    &:active {
+      transform: translateY(4px);
+      box-shadow: none;
+    }
   }
 }
 
@@ -216,6 +228,17 @@ button {
     border-radius: 3px;
     line-height: 1.5rem;
     margin-top: 0.5rem;
+    background-color: #eeb294;
+    box-shadow: 0 4px #da7549, 0 0 15px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.2s;
+    &:hover {
+      box-shadow: 0 4px #da7549;
+      background-color: #f5d6d1;
+    }
+    &:active {
+      transform: translateY(4px);
+      box-shadow: none;
+    }
   }
 }
 
