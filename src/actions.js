@@ -113,10 +113,10 @@ const addGuess = (guess) => ({
 export const makeGuess = (subreddit, guess) => (dispatch) => {
   dispatch(addGuess(guess))
   if (subreddit == guess) {
-    dispatch(displayToast('Correct!', 'rgb(103, 196, 115)'))
+    dispatch(displayToast('Correct!', 'green'))
     dispatch(incrementScore())
   } else {
-    dispatch(displayToast('You\'re wrong! The answer was /r/' + subreddit + '...', 'rgb(224, 109, 109)'))
+    dispatch(displayToast('You\'re wrong! The answer was /r/' + subreddit + '...', 'red'))
   }
 }
 
