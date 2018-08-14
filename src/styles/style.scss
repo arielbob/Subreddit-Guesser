@@ -150,7 +150,6 @@ button {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 0.5rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   &--placeholder {
     width: 400px;
     height: 300px;
@@ -207,7 +206,7 @@ button {
     border-radius: 3px;
     margin-bottom: 0.75rem;
     background-color: #eed894;
-    box-shadow: 0 4px #daa849, 0 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px #daa849;
     transition: background-color 0.2s;
     &:hover {
       box-shadow: 0 4px #daa849;
@@ -229,7 +228,7 @@ button {
     line-height: 1.5rem;
     margin-top: 0.5rem;
     background-color: #eeb294;
-    box-shadow: 0 4px #da7549, 0 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px #da7549;
     transition: background-color 0.2s;
     &:hover {
       box-shadow: 0 4px #da7549;
