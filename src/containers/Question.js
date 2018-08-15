@@ -18,10 +18,10 @@ class Question extends React.Component {
   componentDidUpdate(prevProps) {
     // this won't loop infinitely since loadPostAndOptions only dispatches actions
     // when either an image doesn't exist or it's invalidated
-    // we compare question only since our fetch conditions don't depend on isFetching
-    // or error
     const { dispatch } = this.props
     const { subreddit } = this.props.question
+    // we compare the whole question object rather than just the subreddit
+    // since it's possible for the same subreddit to be selected consecutively
     if (prevProps.question != this.props.question) {
       dispatch(loadImageAndOptions(subreddit))
     }

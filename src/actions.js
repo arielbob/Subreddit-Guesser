@@ -273,12 +273,13 @@ const receiveUnseenImages = (subreddit, unseenImages) => ({
  * @param { string } subreddit The current subreddit to load an image from.
  * @return { function } A thunk that dispatches actions for fetching and setting.
  */
-
 export const loadImageAndOptions = (subreddit) => (dispatch, getState) => {
   if (shouldUpdateQuestion(getState())) {
-    let cachedImages = getState().cachedImagesBySubreddit[subreddit]
+    const cachedImages = getState().cachedImagesBySubreddit[subreddit]
+
     if (!cachedImages || !cachedImages.length) {
       dispatch(fetchPosts())
+
       fetchUnseenPosts(subreddit, getState().history)
         .then(unseenPosts => {
           const unseenImages = unseenPosts.map((post) => post.data.url)
@@ -294,6 +295,7 @@ export const loadImageAndOptions = (subreddit) => (dispatch, getState) => {
     } else {
       dispatch(setRandomImage(subreddit))
     }
+
     dispatch(setOptions(subreddit))
   }
 }
