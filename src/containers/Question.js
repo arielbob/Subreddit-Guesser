@@ -6,7 +6,6 @@ import {
   resetErrorMessage
 } from '../actions'
 import NextButton from './NextButton'
-import GuessOptionList from './GuessOptionList'
 import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
@@ -39,20 +38,13 @@ class Question extends React.Component {
     const { dispatch, isFetching, error } = this.props
     const { imageUrl, subreddit } = this.props.question
     return (
-      <div className='question'>
+      <section className='question'>
         <QuestionImage
           src={imageUrl}
           isFetching={isFetching}
           error={error}
           onRetryClick={() => this.handleRetry()} />
-        {
-          error || isFetching ?
-          null :
-          <div>
-            <GuessOptionList />
-          </div>
-        }
-      </div>
+      </section>
     )
   }
 }

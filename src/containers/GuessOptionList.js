@@ -12,12 +12,12 @@ const mapStateToProps = (state) => {
     imageUrl: state.question.imageUrl,
     subreddit: state.question.subreddit,
     options: state.options,
-    isVisible: !state.isFetching
+    isVisible: !state.error || !state.isFetching,
   }
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { subreddit, options, isVisible, imageUrl } = stateProps
+  const { options, isVisible, subreddit, imageUrl } = stateProps
   const { dispatch } = dispatchProps
 
   return {
