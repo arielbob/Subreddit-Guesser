@@ -3,8 +3,7 @@ import React from 'react'
 const QuestionCard = ({
   imageUrl,
   subreddit,
-  guess,
-  index
+  guess
 }) => {
   const isCorrect = subreddit == guess
 
