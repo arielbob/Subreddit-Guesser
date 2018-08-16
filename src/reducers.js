@@ -54,32 +54,81 @@ function errorMessage(state = '', action) {
 // with each other, for example, we don't want the image to change if the subreddit
 // is still the same as the last question; this would mean that the subreddit is now
 // stale
-const initialQuestionState = {
-  imageUrl: '',
-  subreddit: '',
-  isInvalidated: false
-}
-function question(state = initialQuestionState, action) {
+// const initialQuestionState = {
+//   imageUrl: '',
+//   subreddit: '',
+//   isInvalidated: false
+// }
+// function question(state = initialQuestionState, action) {
+//   switch (action.type) {
+//     case RANDOM_SUBREDDIT:
+//       return Object.assign({}, state, {
+//         subreddit: action.subreddit
+//       })
+//     case SET_IMAGE:
+//       return Object.assign({}, state, {
+//         imageUrl: action.imageUrl,
+//         isInvalidated: false
+//       })
+//     case INVALIDATE_IMAGE:
+//       return Object.assign({}, state, {
+//         isInvalidated: true
+//       })
+//     case RESET_GAME:
+//       return initialQuestionState
+//     default:
+//       return state
+//   }
+// }
+
+// BEGIN REFACTOR
+
+function numQuestions(state = 0, action) {
   switch (action.type) {
-    case RANDOM_SUBREDDIT:
-      return Object.assign({}, state, {
-        subreddit: action.subreddit
+    case 'ADD_QUESTION':
+      return state + 1;
+    case RESET_GAME:
+      return 0;
+    default:
+      return state;
+  }
+}
+
+function questions(state = [], action) {
+  switch (action.type) {
+    case 'ADD_GUESS':
+      return state.map(question => {
+        if (question.index == action.index) {
+          return Object.assign({}, question, {
+            guess: action.guess
+          })
+        }
+        return question
       })
-    case SET_IMAGE:
-      return Object.assign({}, state, {
+    case 'ADD_QUESTION':
+      return state.concat({
+        subreddit: action.subreddit,
         imageUrl: action.imageUrl,
-        isInvalidated: false
+        guess: action.guess,
+        index: state.length
       })
-    case INVALIDATE_IMAGE:
-      return Object.assign({}, state, {
-        isInvalidated: true
+    case 'SET_IMAGE':
+      return state.map(question => {
+        if (question.index == action.index) {
+          return Object.assign({}, question, {
+            imageUrl: action.imageUrl
+          })
+        }
+        return question
       })
     case RESET_GAME:
-      return initialQuestionState
+      return []
     default:
       return state
   }
 }
+
+// END REFACTOR
 
 function cachedImagesBySubreddit(state = {}, action) {
   let newState;
@@ -130,21 +179,21 @@ function score(state = 0, action) {
 // TODO: might want to add an id key here
 // NOTE: new questions are added to the start of the array
 // this just helps with rendering the list in reverse chronological order
-function history(state = [], action) {
-  switch (action.type) {
-    case ADD_QUESTION_TO_HISTORY:
-      return ([{
-        imageUrl: action.imageUrl,
-        subreddit: action.subreddit,
-        guess: action.guess,
-        index: action.index
-      }].concat(state))
-    case RESET_GAME:
-      return []
-    default:
-      return state
-  }
-}
+// function history(state = [], action) {
+//   switch (action.type) {
+//     case ADD_QUESTION_TO_HISTORY:
+//       return ([{
+//         imageUrl: action.imageUrl,
+//         subreddit: action.subreddit,
+//         guess: action.guess,
+//         index: action.index
+//       }].concat(state))
+//     case RESET_GAME:
+//       return []
+//     default:
+//       return state
+//   }
+// }
 
 function isFetching(state = false, action) {
   switch (action.type) {
@@ -186,11 +235,11 @@ function toast(state = {
 }
 
 const rootReducer = combineReducers({
-  question,
+  numQuestions,
+  questions,
   cachedImagesBySubreddit,
   options,
   score,
-  history,
   isFetching,
   isToastVisible,
   toast,

@@ -23,9 +23,28 @@ const store = createStore(
   )
 )
 
-render(
-  <Provider store={store}>
-    <Root />
-  </Provider>,
-  document.getElementById('root')
-)
+import { generateNewQuestion, loadImageForQuestion, addGuess, resetGame } from './actions'
+store.dispatch(generateNewQuestion())
+let index = store.getState().numQuestions - 1
+store.dispatch(loadImageForQuestion(index))
+store.dispatch(addGuess(index, 'malefashion'))
+
+setTimeout(() => {
+  store.dispatch(generateNewQuestion())
+  index = store.getState().numQuestions - 1
+  store.dispatch(loadImageForQuestion(index))
+  store.dispatch(addGuess(index, 'me_irl'))
+}, 2000)
+
+setTimeout(() => {
+  index = store.getState().numQuestions - 1
+  store.dispatch(generateNewQuestion())
+  store.dispatch(resetGame())
+}, 4000)
+
+// render(
+//   <Provider store={store}>
+//     <Root />
+//   </Provider>,
+//   document.getElementById('root')
+// )
