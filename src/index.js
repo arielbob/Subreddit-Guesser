@@ -42,6 +42,7 @@ setTimeout(() => {
   store.dispatch(resetGame())
 }, 4000)
 
+// TODO: refactor containers and components to use new state
 // render(
 //   <Provider store={store}>
 //     <Root />
