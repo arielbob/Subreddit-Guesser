@@ -1,24 +1,21 @@
 import { combineReducers } from 'redux'
 
 import {
-  RANDOM_SUBREDDIT,
+  ADD_QUESTION,
+  CHANGE_QUESTION_ID,
   FETCH_POSTS,
   FETCH_POSTS_FAIL,
   RECEIVE_UNSEEN,
-  INVALIDATE_IMAGE,
+  RESET_ERROR_MESSAGE,
+  RESET_GAME,
   SET_IMAGE,
   SET_OPTIONS,
+  ADD_GUESS,
   INCREMENT_SCORE,
   DECREMENT_SCORE,
-  RESET_SCORE,
-  ADD_QUESTION_TO_HISTORY,
   SHOW_TOAST,
-  HIDE_TOAST,
-  RESET_GAME,
-  RESET_ERROR_MESSAGE
-} from './actions'
-
-// TODO: replace string literals with constants
+  HIDE_TOAST
+  } from './actions'
 
 function errorMessage(state = '', action) {
   const { type, error } = action
@@ -36,9 +33,9 @@ function errorMessage(state = '', action) {
 
 function currentQuestionId(state = 0, action) {
   switch (action.type) {
-    case 'CHANGE_QUESTION_ID':
+    case CHANGE_QUESTION_ID:
       return action.id
-    case 'RESET_GAME':
+    case RESET_GAME:
       return 0
     default:
       return state
@@ -53,19 +50,19 @@ function question(state = {
 }, action) {
   let newState
   switch (action.type) {
-    case 'ADD_QUESTION':
+    case ADD_QUESTION:
       return {
         subreddit: action.subreddit,
         imageUrl: action.imageUrl,
         guess: action.guess,
         id: action.id
       }
-    case 'ADD_GUESS':
+    case ADD_GUESS:
       newState = Object.assign({}, state, {
         guess: action.guess
       })
       return newState
-    case 'SET_IMAGE':
+    case SET_IMAGE:
       newState = Object.assign({}, state, {
         imageUrl: action.imageUrl
       })
@@ -80,9 +77,9 @@ function question(state = {
 // race conditions with fetches
 function questionsById(state = {}, action) {
   switch (action.type) {
-    case 'ADD_GUESS':
-    case 'ADD_QUESTION':
-    case 'SET_IMAGE':
+    case ADD_GUESS:
+    case ADD_QUESTION:
+    case SET_IMAGE:
       let newState = Object.assign({}, state)
       newState[action.id] = question(newState[action.id], action)
       return newState

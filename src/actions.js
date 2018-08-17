@@ -1,25 +1,22 @@
-export const RANDOM_SUBREDDIT = 'RANDOM_SUBREDDIT'
-export const INVALIDATE_IMAGE = 'INVALIDATE_IMAGE'
+export const CHANGE_QUESTION_ID = 'CHANGE_QUESTION_ID'
+export const ADD_QUESTION = 'ADD_QUESTION'
+
 export const FETCH_POSTS = 'FETCH_POSTS'
-export const FETCH_POSTS_FAIL = 'FETCH_POST_FAIL'
+export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL'
 export const RECEIVE_UNSEEN = 'RECEIVE_UNSEEN'
 
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
+export const RESET_GAME = 'RESET_GAME'
 
 export const SET_IMAGE = 'SET_IMAGE'
 export const SET_OPTIONS = 'SET_OPTIONS'
 export const ADD_GUESS = 'ADD_GUESS'
-export const MAKE_GUESS = 'MAKE_GUESS'
 
 export const INCREMENT_SCORE = 'INCREMENT_SCORE'
 export const RESET_SCORE = 'RESET_SCORE'
 
-export const ADD_QUESTION_TO_HISTORY = 'ADD_QUESTION_TO_HISTORY'
-
 export const SHOW_TOAST = 'SHOW_TOAST'
 export const HIDE_TOAST = 'HIDE_TOAST'
-
-export const RESET_GAME = 'RESET_GAME'
 
 const SUBREDDITS = [
   'me_irl',
@@ -57,16 +54,6 @@ const SUBREDDITS = [
 // but they aren't always pure which can be seen in the cases where we need random numbers or api calls
 const randomElem = (arr) => (arr[Math.floor(Math.random() * arr.length)])
 
-// TODO: implement sync actions
-// export const selectRandomSubreddit = () => (dispatch, getState) => {
-//   if (!getState().isFetching) {
-//     dispatch({
-//       type: RANDOM_SUBREDDIT,
-//       subreddit: randomElem(SUBREDDITS)
-//     })
-//   }
-// }
-
 const generateOptions = (subreddit, numOptions) => {
   if (numOptions > SUBREDDITS.length) numOptions = SUBREDDITS.length
 
@@ -96,7 +83,7 @@ export const resetGame = () => (dispatch, getState) => {
 
 export const generateNewQuestion = (id) => {
   return {
-    type: 'ADD_QUESTION',
+    type: ADD_QUESTION,
     subreddit: randomElem(SUBREDDITS),
     imageUrl: null,
     guess: null,
@@ -149,7 +136,7 @@ const resetScore = () => ({
 
 export const changeQuestionId = (id) => {
   return {
-    type: 'CHANGE_QUESTION_ID',
+    type: CHANGE_QUESTION_ID,
     id
   }
 }
@@ -171,14 +158,14 @@ export const addGuess = (id, guess) => (dispatch, getState) => {
   }
 }
 
+export const resetErrorMessage = () => ({
+  type: RESET_ERROR_MESSAGE
+})
+
 // async actions
 
 const fetchPosts = () => ({
   type: FETCH_POSTS
-})
-
-export const resetErrorMessage = () => ({
-  type: RESET_ERROR_MESSAGE
 })
 
 const imagePattern = /\.(jpe?g|png|gif)$/g
@@ -220,7 +207,7 @@ const receiveUnseenImages = (subreddit, unseenImages) => ({
 
 // we pass in subreddit here so that we can remove it from cachedImagesBySubreddit
 const setRandomImage = (id, subreddit, images) => ({
-    type: 'SET_IMAGE',
+    type: SET_IMAGE,
     imageUrl: randomElem(images),
     id,
     subreddit
@@ -238,7 +225,6 @@ const setRandomImage = (id, subreddit, images) => ({
 export const loadImageForQuestion = (id) => (dispatch, getState) => {
   // TODO: maybe add error handling here?
   // eg: if there is no question, if there already is an image, etc.
-
   const { subreddit } = getState().questionsById[id]
   const cachedImages = getState().cachedImagesBySubreddit[subreddit]
   // convert the array of question objects to an array of all the images
@@ -248,7 +234,7 @@ export const loadImageForQuestion = (id) => (dispatch, getState) => {
   if (!cachedImages || !cachedImages.length) {
     dispatch(fetchPosts())
 
-    // TODO: might want to splice out the id when passed into here?
+    // TODO: might want to splice out the current id when passed into here?
     fetchUnseenPosts(subreddit, seenImages)
       .then(posts => {
         const images = posts.map(post => post.data.url)
