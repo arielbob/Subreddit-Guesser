@@ -11,10 +11,7 @@ import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
   componentDidMount() {
-    const { dispatch, currentQuestionId, question } = this.props
-    dispatch(generateNewQuestion(currentQuestionId))
-    dispatch(loadImageForQuestion(currentQuestionId))
-    dispatch(setOptions(currentQuestionId))
+    this.createNewQuestion()
   }
 
   componentDidUpdate(prevProps) {
@@ -24,16 +21,16 @@ class Question extends React.Component {
     // we now have more freedom to choose which question we would like to view
     // which will also allow us to easily add question changing features in the future
     const { dispatch, currentQuestionId, question } = this.props
-    if (!this.props.question) {
-      dispatch(generateNewQuestion(currentQuestionId))
-      dispatch(loadImageForQuestion(currentQuestionId))
-      dispatch(setOptions(currentQuestionId))
-    }
+    if (!this.props.question) this.createNewQuestion()
   }
 
   handleRetry() {
-    const { dispatch, currentQuestionId, question } = this.props
     dispatch(resetErrorMessage())
+    this.createNewQuestion()
+  }
+
+  createNewQuestion() {
+    const { dispatch, currentQuestionId, question } = this.props
     dispatch(generateNewQuestion(currentQuestionId))
     dispatch(loadImageForQuestion(currentQuestionId))
     dispatch(setOptions(currentQuestionId))
