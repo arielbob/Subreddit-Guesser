@@ -2,11 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
   generateNewQuestion,
-  selectRandomSubreddit,
-  loadImageAndOptions,
+  loadImageForQuestion,
   resetErrorMessage
 } from '../actions'
-import NextButton from './NextButton'
 import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
@@ -39,7 +37,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { dispatch, isFetching, error } = this.props
+    const { isFetching, error } = this.props
     const { imageUrl } = this.props.question
     return (
       <section className='question'>

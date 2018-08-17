@@ -8,7 +8,7 @@ const CardList = ({ history }) => (
         history.length > 0 &&
         <ul>
           {history.map((question) => (
-            <li className='question-history__item' key={question.index}>
+            <li className='question-history__item' key={question.id}>
               <QuestionCard {...question} />
             </li>
           ))}
