@@ -26,7 +26,6 @@ class Question extends React.Component {
     const { dispatch, currentQuestionId, question } = this.props
     if (!this.props.question) {
       dispatch(generateNewQuestion(currentQuestionId))
-      // TODO: should check in function if it needs an image
       dispatch(loadImageForQuestion(currentQuestionId))
       dispatch(setOptions(currentQuestionId))
     }
@@ -45,7 +44,7 @@ class Question extends React.Component {
     const { imageUrl } = this.props.question || {
       imageUrl: ''
     }
-    
+
     return (
       <section className='question'>
         <QuestionImage

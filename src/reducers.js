@@ -18,23 +18,7 @@ import {
   RESET_ERROR_MESSAGE
 } from './actions'
 
-// state = {
-//   question: {
-//     image: 'http://www.imgur.com/blah.png',
-//     subreddit: 'me_irl'
-//   },
-//   options: ['me_irl', 'pics', ...],
-//   score: 0,
-//   prevQuestions: [
-//     {
-//       image: 'http://www.imgur.com/prevblah.png',
-//       subreddit: 'pics',
-//       guess: 'me_irl'
-//     },
-//     ...
-//   ],
-//   isFetching: false
-// }
+// TODO: replace string literals with constants
 
 function errorMessage(state = '', action) {
   const { type, error } = action
@@ -49,39 +33,6 @@ function errorMessage(state = '', action) {
 
   return state
 }
-
-// TODO: maybe try and figure out some way to make sure the two keys are associated
-// with each other, for example, we don't want the image to change if the subreddit
-// is still the same as the last question; this would mean that the subreddit is now
-// stale
-// const initialQuestionState = {
-//   imageUrl: '',
-//   subreddit: '',
-//   isInvalidated: false
-// }
-// function question(state = initialQuestionState, action) {
-//   switch (action.type) {
-//     case RANDOM_SUBREDDIT:
-//       return Object.assign({}, state, {
-//         subreddit: action.subreddit
-//       })
-//     case SET_IMAGE:
-//       return Object.assign({}, state, {
-//         imageUrl: action.imageUrl,
-//         isInvalidated: false
-//       })
-//     case INVALIDATE_IMAGE:
-//       return Object.assign({}, state, {
-//         isInvalidated: true
-//       })
-//     case RESET_GAME:
-//       return initialQuestionState
-//     default:
-//       return state
-//   }
-// }
-
-// BEGIN REFACTOR
 
 function currentQuestionId(state = 0, action) {
   switch (action.type) {
@@ -142,8 +93,6 @@ function questionsById(state = {}, action) {
   }
 }
 
-// END REFACTOR
-
 function cachedImagesBySubreddit(state = {}, action) {
   let newState
   switch (action.type) {
@@ -189,25 +138,6 @@ function score(state = 0, action) {
       return state
   }
 }
-
-// TODO: might want to add an id key here
-// NOTE: new questions are added to the start of the array
-// this just helps with rendering the list in reverse chronological order
-// function history(state = [], action) {
-//   switch (action.type) {
-//     case ADD_QUESTION_TO_HISTORY:
-//       return ([{
-//         imageUrl: action.imageUrl,
-//         subreddit: action.subreddit,
-//         guess: action.guess,
-//         index: action.index
-//       }].concat(state))
-//     case RESET_GAME:
-//       return []
-//     default:
-//       return state
-//   }
-// }
 
 function isFetching(state = false, action) {
   switch (action.type) {

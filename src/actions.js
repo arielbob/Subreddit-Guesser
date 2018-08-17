@@ -51,12 +51,6 @@ const SUBREDDITS = [
 // TODO: maybe change the reddit api request to get from hot instead of new? - DONE
 //  would maybe filter out some inappropriate posts... lol
 
-export const resetGame = () => (dispatch, getState) => {
-  if (!getState().isFetching) {
-    dispatch({ type: RESET_GAME })
-  }
-}
-
 // we are fine in using this
 // actions do not necessarily need to be pure
 // i think it's just better if they are for testing or something
@@ -94,12 +88,22 @@ const generateOptions = (subreddit, numOptions) => {
   return options
 }
 
-// i think this is good, since we aren't accessing state from within the function
-// i.e. the action is still pure, ignoring the generateOptions() part
-// instead of accessing state from within, we pass the subreddit as an argument,
-// so now setOptions() is independent from the state
-// TODO: maybe figure out a better name for this
-// setOptions doesn't seem that intuitive
+export const resetGame = () => (dispatch, getState) => {
+  if (!getState().isFetching) {
+    dispatch({ type: RESET_GAME })
+  }
+}
+
+export const generateNewQuestion = (id) => {
+  return {
+    type: 'ADD_QUESTION',
+    subreddit: randomElem(SUBREDDITS),
+    imageUrl: null,
+    guess: null,
+    id
+  }
+}
+
 export const setOptions = (id) => (dispatch, getState) => {
   const { subreddit } = getState().questionsById[id] || {
     subreddit: ''
@@ -110,34 +114,6 @@ export const setOptions = (id) => (dispatch, getState) => {
     options: generateOptions(subreddit, 5)
   })
 }
-
-// const addGuess = (guess) => ({
-//   type: ADD_GUESS,
-//   guess
-// })
-
-// export const makeGuess = (subreddit, guess) => (dispatch) => {
-//   dispatch(addGuess(guess))
-//   if (subreddit == guess) {
-//     dispatch(displayToast('Correct!', 'green'))
-//     dispatch(incrementScore())
-//   } else {
-//     dispatch(displayToast('You\'re wrong! The answer was /r/' + subreddit + '...', 'red'))
-//   }
-// }
-
-// NOTE: not sure if that index thing is fine... lol
-// seems good for now
-// let questionIndex = 0;
-// export const addQuestionToHistory = (imageUrl, subreddit, guess) => (dispatch, getState) => {
-//   dispatch({
-//     type: ADD_QUESTION_TO_HISTORY,
-//     imageUrl,
-//     subreddit,
-//     guess,
-//     index: getState().history.length
-//   })
-// }
 
 // TODO: this might be weird since we just stop the last one from disappearing
 // if we have two toasts overlapping then the second one will just replace the
@@ -171,44 +147,39 @@ const resetScore = () => ({
   type: RESET_SCORE
 })
 
+export const changeQuestionId = (id) => {
+  return {
+    type: 'CHANGE_QUESTION_ID',
+    id
+  }
+}
+
+// TODO: don't think this needs to be a thunk
+export const addGuess = (id, guess) => (dispatch, getState) => {
+  dispatch({
+    type: ADD_GUESS,
+    id,
+    guess
+  })
+
+  const { subreddit } = getState().questionsById[id]
+  if (subreddit == guess) {
+    dispatch(displayToast('Correct!', 'green'))
+    dispatch(incrementScore())
+  } else {
+    dispatch(displayToast('You\'re wrong! The answer was /r/' + subreddit + '...', 'red'))
+  }
+}
+
 // async actions
 
 const fetchPosts = () => ({
   type: FETCH_POSTS
 })
 
-// export const invalidateImage = () => (dispatch, getState) => {
-//   if (!getState().isFetching) {
-//     dispatch({
-//       type: INVALIDATE_IMAGE
-//     })
-//   }
-// }
-
 export const resetErrorMessage = () => ({
   type: RESET_ERROR_MESSAGE
 })
-
-// const shouldUpdateQuestion = state => {
-//   const { isFetching, errorMessage } = state
-//   let { imageUrl, isInvalidated } = state.question
-//
-//   // we check for errorMessage first since isFetching is set to false when we
-//   // receive the FETCH_POSTS_FAIL action
-//   // having isFetching first would cause an infinite loop due to the dispatch
-//   // in componentDidUpdate in the Question container
-//   // in essence, this forces us to handle the error before trying to fetch
-//   // again
-//   if (errorMessage) {
-//     return false
-//   } else if (isFetching) {
-//     return false
-//   } else if (!imageUrl) {
-//     return true
-//   } else {
-//     return isInvalidated
-//   }
-// }
 
 const imagePattern = /\.(jpe?g|png|gif)$/g
 const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 20) => {
@@ -241,93 +212,11 @@ const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 2
     })
 }
 
-// this could have not been a thunk and we could have just passed in the unseen array
-// when dispatching this, but i don't think we want to rely on the action always
-// just outright setting the cachedImages to the exact same array
-// so instead, we use getState to get whatever new state was reduced from
-// receiveUnseenImages(subreddit, unseen)
-// const setRandomImage = (subreddit) => (dispatch, getState) => {
-//   const imageUrl = randomElem(getState().cachedImagesBySubreddit[subreddit])
-//   dispatch({
-//     type: SET_IMAGE,
-//     subreddit,
-//     imageUrl
-//   })
-// }
-
 const receiveUnseenImages = (subreddit, unseenImages) => ({
   type: RECEIVE_UNSEEN,
   subreddit,
   unseenImages
 })
-
-// TODO: maybe figure out a way to keep getting posts until the array in the cache
-// has a certain number of entries? so that if we only get one image due to the other
-// images already being seen... well actually, it would be the same number of requests,
-// just at different times, so idk if it would actually help. oh well, just putting this
-// here just in case it does
-
-/**
- * Loads and sets a new image and creates the options for the current question.
- * Images are chosen from the cachedImagesBySubreddit object. If the array of cachedImages
- * for the given subreddit is empty, we fetch some new images that have not yet been seen.
- * We save that array in the cachedImages object and then we set a random image from the new
- * state.
- * @param { string } subreddit The current subreddit to load an image from.
- * @return { function } A thunk that dispatches actions for fetching and setting.
- */
-// export const loadImageAndOptions = (subreddit) => (dispatch, getState) => {
-//   if (shouldUpdateQuestion(getState())) {
-//     const cachedImages = getState().cachedImagesBySubreddit[subreddit]
-//
-//     if (!cachedImages || !cachedImages.length) {
-//       dispatch(fetchPosts())
-//
-//       fetchUnseenPosts(subreddit, getState().history)
-//         .then(unseenPosts => {
-//           const unseenImages = unseenPosts.map((post) => post.data.url)
-//           dispatch(receiveUnseenImages(subreddit, unseenImages))
-//           dispatch(setRandomImage(subreddit))
-//         })
-//         .catch(err => {
-//           dispatch({
-//             type: FETCH_POSTS_FAIL,
-//             error: `There was an error fetching images.. (${err.message})`
-//           })
-//         })
-//     } else {
-//       dispatch(setRandomImage(subreddit))
-//     }
-//
-//     dispatch(setOptions(subreddit))
-//   }
-// }
-
-// BEGIN REFACTOR
-
-export const changeQuestionId = (id) => {
-  return {
-    type: 'CHANGE_QUESTION_ID',
-    id
-  }
-}
-
-// TODO: don't think this needs to be a thunk
-export const addGuess = (id, guess) => (dispatch, getState) => {
-  dispatch({
-    type: ADD_GUESS,
-    id,
-    guess
-  })
-
-  const { subreddit } = getState().questionsById[id]
-  if (subreddit == guess) {
-    dispatch(displayToast('Correct!', 'green'))
-    dispatch(incrementScore())
-  } else {
-    dispatch(displayToast('You\'re wrong! The answer was /r/' + subreddit + '...', 'red'))
-  }
-}
 
 // we pass in subreddit here so that we can remove it from cachedImagesBySubreddit
 const setRandomImage = (id, subreddit, images) => ({
@@ -337,6 +226,15 @@ const setRandomImage = (id, subreddit, images) => ({
     subreddit
 })
 
+/**
+ * Loads and sets a new image for the question with the passed in ID.
+ * Images are chosen from the cachedImagesBySubreddit object. If the array of cachedImages
+ * for the given subreddit is empty, we fetch some new images that have not yet been seen.
+ * We save that array in the cachedImages object and set the question's image to an image
+ * from that array.
+ * @param { string } subreddit The current subreddit to load an image from.
+ * @return { function } A thunk that dispatches actions for fetching and setting.
+ */
 export const loadImageForQuestion = (id) => (dispatch, getState) => {
   // TODO: maybe add error handling here?
   // eg: if there is no question, if there already is an image, etc.
@@ -365,15 +263,5 @@ export const loadImageForQuestion = (id) => (dispatch, getState) => {
       })
   } else {
     dispatch(setRandomImage(id, subreddit, cachedImages))
-  }
-}
-
-export const generateNewQuestion = (id) => {
-  return {
-    type: 'ADD_QUESTION',
-    subreddit: randomElem(SUBREDDITS),
-    imageUrl: null,
-    guess: null,
-    id
   }
 }
