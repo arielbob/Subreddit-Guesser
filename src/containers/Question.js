@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
+  generateNewQuestion,
   selectRandomSubreddit,
   loadImageAndOptions,
   resetErrorMessage
@@ -10,33 +11,36 @@ import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
   componentDidMount() {
-    const { dispatch, subreddit } = this.props
-    dispatch(selectRandomSubreddit())
+    // might not need this
+    this.props.dispatch(generateNewQuestion(currentQuestionId))
   }
 
   componentDidUpdate(prevProps) {
-    // this won't loop infinitely since loadPostAndOptions only dispatches actions
-    // when either an image doesn't exist or it's invalidated
-    const { dispatch } = this.props
-    const { subreddit } = this.props.question
-    // we compare the whole question object rather than just the subreddit
-    // since it's possible for the same subreddit to be selected consecutively
-    if (prevProps.question != this.props.question) {
-      dispatch(loadImageAndOptions(subreddit))
+    // now this container is no longer just a container that gets the last question
+    // in the array. instead, it has its own questionId which is used to index the
+    // questions array
+    // we now have more freedom to choose which question we would like to view
+    // which will also allow us to easily add question changing features in the future
+    const { dispatch, currentQuestionId, question } = this.props
+    if (currentQuestionId != prevProps.currentQuestionId) {
+      if (!this.props.question) {
+        dispatch(generateNewQuestion(currentQuestionId))
+      }
+      // TODO: should check in function if it needs an image
+      dispatch(loadImageForQuestion(currentQuestionId))
     }
   }
 
   handleRetry() {
-    const { dispatch } = this.props
-    const { subreddit } = this.props.question
-
+    const { dispatch, currentQuestionId } = this.props
     dispatch(resetErrorMessage())
-    dispatch(selectRandomSubreddit())
+    dispatch(generateNewQuestion(currentQuestionId))
+    dispatch(loadImageForQuestion(currentQuestionId))
   }
 
   render() {
     const { dispatch, isFetching, error } = this.props
-    const { imageUrl, subreddit } = this.props.question
+    const { imageUrl } = this.props.question
     return (
       <section className='question'>
         <QuestionImage
@@ -50,7 +54,8 @@ class Question extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  question: state.question,
+  currentQuestionId: state.currentQuestionId,
+  question: state.questionsById[state.currentQuestionId],
   isFetching: state.isFetching,
   error: state.errorMessage
 })
