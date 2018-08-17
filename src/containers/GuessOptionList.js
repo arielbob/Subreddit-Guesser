@@ -1,18 +1,20 @@
 import { connect } from 'react-redux'
 import {
-  makeGuess,
-  invalidateImage,
-  selectRandomSubreddit,
-  addQuestionToHistory
+  addGuess,
+  changeQuestionId
 } from '../actions'
 import OptionList from '../components/OptionList'
 
 const mapStateToProps = (state) => {
+  const { subreddit } = state.questionsById[state.currentQuestionId] || {
+    subreddit: ''
+  }
+
   return {
     currentQuestionId: state.currentQuestionId,
-    subreddit: state.questionsById[state.currentQuestionId].subreddit,
     options: state.options,
     isVisible: !state.error || !state.isFetching,
+    subreddit
   }
 }
 

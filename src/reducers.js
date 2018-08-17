@@ -94,7 +94,12 @@ function currentQuestionId(state = 0, action) {
   }
 }
 
-function question(state = {}, action) {
+function question(state = {
+  subreddit: '',
+  imageUrl: '',
+  guess: '',
+  id: null
+}, action) {
   let newState
   switch (action.type) {
     case 'ADD_QUESTION':

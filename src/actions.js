@@ -100,10 +100,16 @@ const generateOptions = (subreddit, numOptions) => {
 // so now setOptions() is independent from the state
 // TODO: maybe figure out a better name for this
 // setOptions doesn't seem that intuitive
-export const setOptions = (subreddit) => ({
-  type: SET_OPTIONS,
-  options: generateOptions(subreddit, 5)
-})
+export const setOptions = (id) => (dispatch, getState) => {
+  const { subreddit } = getState().questionsById[id] || {
+    subreddit: ''
+  }
+
+  dispatch({
+    type: SET_OPTIONS,
+    options: generateOptions(subreddit, 5)
+  })
+}
 
 // const addGuess = (guess) => ({
 //   type: ADD_GUESS,
@@ -306,6 +312,7 @@ export const changeQuestionId = (id) => {
   }
 }
 
+// TODO: don't think this needs to be a thunk
 export const addGuess = (id, guess) => (dispatch, getState) => {
   dispatch({
     type: ADD_GUESS,

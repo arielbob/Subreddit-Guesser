@@ -4,14 +4,17 @@ import {
   generateNewQuestion,
   loadImageForQuestion,
   setOptions,
-  resetErrorMessage
+  resetErrorMessage,
+  changeQuestionId
 } from '../actions'
 import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
   componentDidMount() {
-    // might not need this
-    this.props.dispatch(generateNewQuestion(currentQuestionId))
+    const { dispatch, currentQuestionId, question } = this.props
+    dispatch(generateNewQuestion(currentQuestionId))
+    dispatch(loadImageForQuestion(currentQuestionId))
+    dispatch(setOptions(currentQuestionId))
   }
 
   componentDidUpdate(prevProps) {
@@ -21,13 +24,11 @@ class Question extends React.Component {
     // we now have more freedom to choose which question we would like to view
     // which will also allow us to easily add question changing features in the future
     const { dispatch, currentQuestionId, question } = this.props
-    if (currentQuestionId != prevProps.currentQuestionId) {
-      if (!this.props.question) {
-        dispatch(generateNewQuestion(currentQuestionId))
-      }
+    if (!this.props.question) {
+      dispatch(generateNewQuestion(currentQuestionId))
       // TODO: should check in function if it needs an image
       dispatch(loadImageForQuestion(currentQuestionId))
-      dispatch(setOptions(question.subreddit))
+      dispatch(setOptions(currentQuestionId))
     }
   }
 
@@ -36,12 +37,15 @@ class Question extends React.Component {
     dispatch(resetErrorMessage())
     dispatch(generateNewQuestion(currentQuestionId))
     dispatch(loadImageForQuestion(currentQuestionId))
-    dispatch(setOptions(question.subreddit))
+    dispatch(setOptions(currentQuestionId))
   }
 
   render() {
     const { isFetching, error } = this.props
-    const { imageUrl } = this.props.question
+    const { imageUrl } = this.props.question || {
+      imageUrl: ''
+    }
+    
     return (
       <section className='question'>
         <QuestionImage
