@@ -87,6 +87,8 @@ function currentQuestionId(state = 0, action) {
   switch (action.type) {
     case 'CHANGE_QUESTION_ID':
       return action.id
+    case 'RESET_GAME':
+      return 0
     default:
       return state
   }
@@ -117,6 +119,9 @@ function question(state = {}, action) {
   }
 }
 
+// we use an object to hold each question object with the key being the id of the question
+// indexing questions is much simpler + faster this way and allows us to easily prevent
+// race conditions with fetches
 function questionsById(state = {}, action) {
   switch (action.type) {
     case 'ADD_GUESS':
@@ -135,7 +140,7 @@ function questionsById(state = {}, action) {
 // END REFACTOR
 
 function cachedImagesBySubreddit(state = {}, action) {
-  let newState;
+  let newState
   switch (action.type) {
     case RECEIVE_UNSEEN:
       newState = Object.assign({}, state)

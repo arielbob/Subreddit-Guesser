@@ -23,22 +23,24 @@ const store = createStore(
   )
 )
 
-import { generateNewQuestion, loadImageForQuestion, addGuess, resetGame } from './actions'
-store.dispatch(generateNewQuestion())
-let index = store.getState().numQuestions - 1
-store.dispatch(loadImageForQuestion(index))
-store.dispatch(addGuess(index, 'malefashion'))
+import { generateNewQuestion, loadImageForQuestion, addGuess, changeQuestionId, resetGame } from './actions'
+let currentQuestionId = store.getState().currentQuestionId
+store.dispatch(generateNewQuestion(currentQuestionId))
+store.dispatch(loadImageForQuestion(currentQuestionId))
+store.dispatch(addGuess(currentQuestionId, 'malefashion'))
 
 setTimeout(() => {
-  store.dispatch(generateNewQuestion())
-  index = store.getState().numQuestions - 1
-  store.dispatch(loadImageForQuestion(index))
-  store.dispatch(addGuess(index, 'me_irl'))
+  store.dispatch(changeQuestionId(currentQuestionId + 1))
+  currentQuestionId = store.getState().currentQuestionId
+  store.dispatch(generateNewQuestion(currentQuestionId))
+  store.dispatch(loadImageForQuestion(currentQuestionId))
+  store.dispatch(addGuess(currentQuestionId, 'me_irl'))
 }, 2000)
 
 setTimeout(() => {
-  index = store.getState().numQuestions - 1
-  store.dispatch(generateNewQuestion())
+  store.dispatch(changeQuestionId(currentQuestionId + 1))
+  currentQuestionId = store.getState().currentQuestionId
+  store.dispatch(generateNewQuestion(currentQuestionId))
   store.dispatch(resetGame())
 }, 4000)
 

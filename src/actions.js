@@ -205,7 +205,7 @@ export const resetErrorMessage = () => ({
 // }
 
 const imagePattern = /\.(jpe?g|png|gif)$/g
-const fetchUnseenPosts = (subreddit, history, limit = 50, after, numTries = 20) => {
+const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 20) => {
   return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}&after=${after}`)
     .then(res => {
       if (!res.ok) throw Error(`Error ${res.status}`)
@@ -218,11 +218,8 @@ const fetchUnseenPosts = (subreddit, history, limit = 50, after, numTries = 20) 
         return imagePattern.test(url) && !over_18;
       })
 
-      const unseenPosts = posts.filter(post => {
-        // try to find an entry in history with same image url
-        // we only want to keep the post if it cannot find it, i.e. the image has not been seen yet
-        return !history.find(question => question.imageUrl == post.data.url)
-      })
+      // TODO: test this probably
+      const unseenPosts = posts.filter(post => !seenImages.includes(post.data.url))
 
       if (unseenPosts.length) {
         return unseenPosts
@@ -233,7 +230,7 @@ const fetchUnseenPosts = (subreddit, history, limit = 50, after, numTries = 20) 
         // so passing it into the api request will only give us posts after that post
         if (numTries == 0) throw new Error("Number of tries exceeded")
         const { after } = json.data
-        return fetchUnseenPosts(subreddit, history, limit, after, --numTries)
+        return fetchUnseenPosts(subreddit, seenImages, limit, after, --numTries)
       }
     })
 }
@@ -339,16 +336,19 @@ export const loadImageForQuestion = (id) => (dispatch, getState) => {
 
   const { subreddit } = getState().questionsById[id]
   const cachedImages = getState().cachedImagesBySubreddit[subreddit]
+  // convert the array of question objects to an array of all the images
+  const seenImages = Object.values(getState().questionsById)
+    .map(question => question.imageUrl)
 
   if (!cachedImages || !cachedImages.length) {
     dispatch(fetchPosts())
 
     // TODO: might want to splice out the id when passed into here?
-    fetchUnseenPosts(subreddit, getState().questions)
+    fetchUnseenPosts(subreddit, seenImages)
       .then(posts => {
         const images = posts.map(post => post.data.url)
-        dispatch(receiveUnseenImages(subreddit, images))    // put them in the cache
-        dispatch(setRandomImage(id, subreddit, images))  // set the image for the question
+        dispatch(receiveUnseenImages(subreddit, images))  // put them in the cache
+        dispatch(setRandomImage(id, subreddit, images))   // set the image for the question
       })
       .catch(err => {
         dispatch({
