@@ -85,42 +85,48 @@ function errorMessage(state = '', action) {
 
 function currentQuestionId(state = 0, action) {
   switch (action.type) {
-    case CHANGE_QUESTION_ID:
+    case 'CHANGE_QUESTION_ID':
       return action.id
     default:
       return state
   }
 }
 
-function questions(state = [], action) {
+function question(state = {}, action) {
+  let newState
   switch (action.type) {
-    case 'ADD_GUESS':
-      return state.map(question => {
-        if (question.id == action.id) {
-          return Object.assign({}, question, {
-            guess: action.guess
-          })
-        }
-        return question
-      })
     case 'ADD_QUESTION':
-      return state.concat({
+      return {
         subreddit: action.subreddit,
         imageUrl: action.imageUrl,
         guess: action.guess,
         id: action.id
+      }
+    case 'ADD_GUESS':
+      newState = Object.assign({}, state, {
+        guess: action.guess
       })
+      return newState
     case 'SET_IMAGE':
-      return state.map(question => {
-        if (question.id == action.id) {
-          return Object.assign({}, question, {
-            imageUrl: action.imageUrl
-          })
-        }
-        return question
+      newState = Object.assign({}, state, {
+        imageUrl: action.imageUrl
       })
+      return newState
+    default:
+      return state
+  }
+}
+
+function questionsById(state = {}, action) {
+  switch (action.type) {
+    case 'ADD_GUESS':
+    case 'ADD_QUESTION':
+    case 'SET_IMAGE':
+      let newState = Object.assign({}, state)
+      newState[action.id] = question(newState[action.id], action)
+      return newState
     case RESET_GAME:
-      return []
+      return {}
     default:
       return state
   }
@@ -234,8 +240,7 @@ function toast(state = {
 
 const rootReducer = combineReducers({
   currentQuestionId,
-  numQuestions,
-  questions,
+  questionsById,
   cachedImagesBySubreddit,
   options,
   score,

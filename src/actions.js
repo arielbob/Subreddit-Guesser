@@ -302,14 +302,21 @@ const receiveUnseenImages = (subreddit, unseenImages) => ({
 
 // BEGIN REFACTOR
 
-export const addGuess = (index, guess) => (dispatch, getState) => {
+export const changeQuestionId = (id) => {
+  return {
+    type: 'CHANGE_QUESTION_ID',
+    id
+  }
+}
+
+export const addGuess = (id, guess) => (dispatch, getState) => {
   dispatch({
     type: ADD_GUESS,
-    index,
+    id,
     guess
   })
 
-  const { subreddit } = getState().questions[index]
+  const { subreddit } = getState().questionsById[id]
   if (subreddit == guess) {
     dispatch(displayToast('Correct!', 'green'))
     dispatch(incrementScore())
@@ -319,28 +326,29 @@ export const addGuess = (index, guess) => (dispatch, getState) => {
 }
 
 // we pass in subreddit here so that we can remove it from cachedImagesBySubreddit
-const setRandomImage = (index, subreddit, images) => ({
+const setRandomImage = (id, subreddit, images) => ({
     type: 'SET_IMAGE',
     imageUrl: randomElem(images),
-    index,
+    id,
     subreddit
 })
 
-export const loadImageForQuestion = (index) => (dispatch, getState) => {
+export const loadImageForQuestion = (id) => (dispatch, getState) => {
   // TODO: maybe add error handling here?
+  // eg: if there is no question, if there already is an image, etc.
 
-  const { subreddit } = getState().questions[index]
+  const { subreddit } = getState().questionsById[id]
   const cachedImages = getState().cachedImagesBySubreddit[subreddit]
 
   if (!cachedImages || !cachedImages.length) {
     dispatch(fetchPosts())
 
-    // TODO: might want to splice out the index when passed into here?
+    // TODO: might want to splice out the id when passed into here?
     fetchUnseenPosts(subreddit, getState().questions)
       .then(posts => {
         const images = posts.map(post => post.data.url)
         dispatch(receiveUnseenImages(subreddit, images))    // put them in the cache
-        dispatch(setRandomImage(index, subreddit, images))  // set the image for the question
+        dispatch(setRandomImage(id, subreddit, images))  // set the image for the question
       })
       .catch(err => {
         dispatch({
@@ -349,15 +357,16 @@ export const loadImageForQuestion = (index) => (dispatch, getState) => {
         })
       })
   } else {
-    dispatch(setRandomImage(index, subreddit, cachedImages))
+    dispatch(setRandomImage(id, subreddit, cachedImages))
   }
 }
 
-export const generateNewQuestion = () => {
+export const generateNewQuestion = (id) => {
   return {
     type: 'ADD_QUESTION',
     subreddit: randomElem(SUBREDDITS),
     imageUrl: null,
-    guess: null
+    guess: null,
+    id
   }
 }
