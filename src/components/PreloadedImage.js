@@ -27,7 +27,7 @@ class PreloadedImage extends React.Component {
       }
 
       // preload the new image
-      this.imgToLoad.src = this.props.src
+      if (this.props.src) this.imgToLoad.src = this.props.src
 
       this.setState({
         isLoading: true,
@@ -38,8 +38,8 @@ class PreloadedImage extends React.Component {
 
   render() {
     const { isLoading, src, prevImage } = this.state
-
     let imgSrc;
+
     if (!isLoading && src) {
       imgSrc = src
     } else if (isLoading && prevImage) {
