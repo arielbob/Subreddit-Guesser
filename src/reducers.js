@@ -83,14 +83,12 @@ function errorMessage(state = '', action) {
 
 // BEGIN REFACTOR
 
-function numQuestions(state = 0, action) {
+function currentQuestionId(state = 0, action) {
   switch (action.type) {
-    case 'ADD_QUESTION':
-      return state + 1;
-    case RESET_GAME:
-      return 0;
+    case CHANGE_QUESTION_ID:
+      return action.id
     default:
-      return state;
+      return state
   }
 }
 
@@ -98,7 +96,7 @@ function questions(state = [], action) {
   switch (action.type) {
     case 'ADD_GUESS':
       return state.map(question => {
-        if (question.index == action.index) {
+        if (question.id == action.id) {
           return Object.assign({}, question, {
             guess: action.guess
           })
@@ -110,11 +108,11 @@ function questions(state = [], action) {
         subreddit: action.subreddit,
         imageUrl: action.imageUrl,
         guess: action.guess,
-        index: state.length
+        id: action.id
       })
     case 'SET_IMAGE':
       return state.map(question => {
-        if (question.index == action.index) {
+        if (question.id == action.id) {
           return Object.assign({}, question, {
             imageUrl: action.imageUrl
           })
@@ -235,6 +233,7 @@ function toast(state = {
 }
 
 const rootReducer = combineReducers({
+  currentQuestionId,
   numQuestions,
   questions,
   cachedImagesBySubreddit,
