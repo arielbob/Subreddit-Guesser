@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  resetGame,
-  selectRandomSubreddit
+  resetGame
 } from '../actions'
 
 const ResetButton = ({ handleResetClick }) => {
@@ -16,7 +15,6 @@ const ResetButton = ({ handleResetClick }) => {
 const mapDispatchToProps = (dispatch) => ({
   handleResetClick: () => {
     dispatch(resetGame())
-    dispatch(selectRandomSubreddit())
   }
 })
 
