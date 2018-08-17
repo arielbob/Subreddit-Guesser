@@ -9,15 +9,15 @@ import OptionList from '../components/OptionList'
 
 const mapStateToProps = (state) => {
   return {
-    imageUrl: state.question.imageUrl,
-    subreddit: state.question.subreddit,
+    currentQuestionId: state.currentQuestionId,
+    subreddit: state.questionsById[state.currentQuestionId].subreddit,
     options: state.options,
     isVisible: !state.error || !state.isFetching,
   }
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { options, isVisible, subreddit, imageUrl } = stateProps
+  const { currentQuestionId, subreddit, options, isVisible } = stateProps
   const { dispatch } = dispatchProps
 
   return {
@@ -25,10 +25,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     options,
     isVisible,
     onClick: (guessValue) => {
-      dispatch(makeGuess(subreddit, guessValue))
-      dispatch(addQuestionToHistory(imageUrl, subreddit, guessValue))
-      dispatch(selectRandomSubreddit())
-      dispatch(invalidateImage())
+      dispatch(addGuess(currentQuestionId, guessValue))
+      dispatch(changeQuestionId(currentQuestionId + 1))
     }
   }
 }

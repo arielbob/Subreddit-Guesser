@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {
   generateNewQuestion,
   loadImageForQuestion,
+  setOptions,
   resetErrorMessage
 } from '../actions'
 import QuestionImage from '../components/QuestionImage'
@@ -26,14 +27,16 @@ class Question extends React.Component {
       }
       // TODO: should check in function if it needs an image
       dispatch(loadImageForQuestion(currentQuestionId))
+      dispatch(setOptions(question.subreddit))
     }
   }
 
   handleRetry() {
-    const { dispatch, currentQuestionId } = this.props
+    const { dispatch, currentQuestionId, question } = this.props
     dispatch(resetErrorMessage())
     dispatch(generateNewQuestion(currentQuestionId))
     dispatch(loadImageForQuestion(currentQuestionId))
+    dispatch(setOptions(question.subreddit))
   }
 
   render() {
