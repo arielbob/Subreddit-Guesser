@@ -244,6 +244,10 @@ button {
 }
 
 .error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   &__message {
     margin-top: 0;
     margin-bottom: 0.5rem;
