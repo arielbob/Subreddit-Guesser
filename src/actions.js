@@ -141,7 +141,6 @@ export const changeQuestionId = (id) => {
   }
 }
 
-// TODO: don't think this needs to be a thunk
 export const addGuess = (id, guess) => (dispatch, getState) => {
   dispatch({
     type: ADD_GUESS,
@@ -207,10 +206,10 @@ const receiveUnseenImages = (subreddit, unseenImages) => ({
 
 // we pass in subreddit here so that we can remove it from cachedImagesBySubreddit
 const setRandomImage = (id, subreddit, images) => ({
-    type: SET_IMAGE,
-    imageUrl: randomElem(images),
-    id,
-    subreddit
+  type: SET_IMAGE,
+  imageUrl: randomElem(images),
+  id,
+  subreddit
 })
 
 /**
