@@ -6,20 +6,15 @@ import {
 import OptionList from '../components/OptionList'
 
 const mapStateToProps = (state) => {
-  const { subreddit } = state.questionsById[state.currentQuestionId] || {
-    subreddit: ''
-  }
-
   return {
     currentQuestionId: state.currentQuestionId,
     options: state.options,
-    isVisible: !state.error || !state.isFetching,
-    subreddit
+    isVisible: !state.error || !state.isFetching
   }
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { currentQuestionId, subreddit, options, isVisible } = stateProps
+  const { currentQuestionId, options, isVisible } = stateProps
   const { dispatch } = dispatchProps
 
   return {

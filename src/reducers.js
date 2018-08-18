@@ -15,7 +15,7 @@ import {
   DECREMENT_SCORE,
   SHOW_TOAST,
   HIDE_TOAST
-  } from './actions'
+} from './actions'
 
 function errorMessage(state = '', action) {
   const { type, error } = action
@@ -48,7 +48,6 @@ function question(state = {
   guess: '',
   id: null
 }, action) {
-  let newState
   switch (action.type) {
     case ADD_QUESTION:
       return {
@@ -58,15 +57,13 @@ function question(state = {
         id: action.id
       }
     case ADD_GUESS:
-      newState = Object.assign({}, state, {
+      return Object.assign({}, state, {
         guess: action.guess
       })
-      return newState
     case SET_IMAGE:
-      newState = Object.assign({}, state, {
+      return Object.assign({}, state, {
         imageUrl: action.imageUrl
       })
-      return newState
     default:
       return state
   }
@@ -110,16 +107,11 @@ function cachedImagesBySubreddit(state = {}, action) {
       return newState
     case SET_IMAGE:
       // remove the image that's being displayed from the cachedImages
-      // NOTE: we could also do this when it's being added to the history...
       newState = Object.assign({}, state)
       newState[action.subreddit] = newState[action.subreddit].filter((imageUrl) => {
         return imageUrl !== action.imageUrl
       })
       return newState
-    case RESET_GAME:
-    // QUESTION: should we reset the cache when the game resets?
-    // actually, cache should be fine, but it's just that the history is reset
-    // and that's how we knew what images hadn't been seen, but i think it's fine...
     default:
       return state
   }
@@ -173,7 +165,6 @@ function isToastVisible(state = false, action) {
 function toast(state = {
   text: '',
   color: '',
-  duration: 1000
 }, action) {
   switch (action.type) {
     case SHOW_TOAST:

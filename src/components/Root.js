@@ -1,12 +1,4 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import {
-  selectRandomSubreddit,
-  loadRandomPost,
-  setOptions,
-  makeGuess,
-  invalidateImage
-} from '../actions'
+import React from 'react'
 import Question from '../containers/Question'
 import GuessOptionList from '../containers/GuessOptionList'
 import Score from '../containers/Score'
