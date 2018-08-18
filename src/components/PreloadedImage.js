@@ -17,6 +17,15 @@ class PreloadedImage extends React.Component {
       this.setState({ isLoading: false })
       if (this.props.onLoad) this.props.onLoad()
     }
+
+    if (this.props.src) {
+      this.imgToLoad.src = this.props.src
+
+      this.setState({
+        isLoading: true,
+        src: this.props.src
+      })
+    }
   }
 
   componentDidUpdate(prevProps) {
