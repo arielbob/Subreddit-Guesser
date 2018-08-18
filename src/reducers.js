@@ -90,6 +90,17 @@ function questionsById(state = {}, action) {
   }
 }
 
+function questionIds(state = [], action) {
+  switch (action.type) {
+    case ADD_QUESTION:
+      return state.concat(action.id)
+    case RESET_GAME:
+      return []
+    default:
+      return state
+  }
+}
+
 function cachedImagesBySubreddit(state = {}, action) {
   let newState
   switch (action.type) {
@@ -178,6 +189,7 @@ function toast(state = {
 const rootReducer = combineReducers({
   currentQuestionId,
   questionsById,
+  questionIds,
   cachedImagesBySubreddit,
   options,
   score,
