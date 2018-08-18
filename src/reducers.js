@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 
 import {
   ADD_QUESTION,
+  GENERATE_QUESTION,
   CHANGE_QUESTION_ID,
   FETCH_POSTS,
   FETCH_POSTS_FAIL,
@@ -21,6 +22,7 @@ function errorMessage(state = '', action) {
   const { type, error } = action
 
   switch (type) {
+    case FETCH_POSTS:
     case RESET_ERROR_MESSAGE:
     case RESET_GAME:
       return ''
@@ -49,7 +51,7 @@ function question(state = {
   id: null
 }, action) {
   switch (action.type) {
-    case ADD_QUESTION:
+    case GENERATE_QUESTION:
       return {
         subreddit: action.subreddit,
         imageUrl: action.imageUrl,
@@ -75,7 +77,7 @@ function question(state = {
 function questionsById(state = {}, action) {
   switch (action.type) {
     case ADD_GUESS:
-    case ADD_QUESTION:
+    case GENERATE_QUESTION:
     case SET_IMAGE:
       let newState = Object.assign({}, state)
       newState[action.id] = question(newState[action.id], action)

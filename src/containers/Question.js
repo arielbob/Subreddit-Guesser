@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
+  addNewQuestion,
   generateNewQuestion,
   loadImageForQuestion,
   setOptions,
@@ -11,7 +12,9 @@ import QuestionImage from '../components/QuestionImage'
 
 class Question extends React.Component {
   componentDidMount() {
-    this.createNewQuestion()
+    const { dispatch, currentQuestionId } = this.props
+    dispatch(addNewQuestion(currentQuestionId))
+    this.populateQuestionAndOptions(currentQuestionId)
   }
 
   componentDidUpdate(prevProps) {
@@ -20,20 +23,28 @@ class Question extends React.Component {
     // questions array
     // we now have more freedom to choose which question we would like to view
     // which will also allow us to easily add question changing features in the future
+
+    // the way new questions are added is that currentQuestionId is changed
+    // if there is no question at that id, then we add that id to questionIds and
+    // generate a new question at questionsById[id]
     const { dispatch, currentQuestionId, question } = this.props
-    if (!this.props.question) this.createNewQuestion()
+    if (!this.props.question) {
+      dispatch(addNewQuestion(currentQuestionId))
+      this.populateQuestionAndOptions(currentQuestionId)
+    }
+  }
+
+  populateQuestionAndOptions(id) {
+    const { dispatch } = this.props
+    dispatch(generateNewQuestion(id))
+    dispatch(loadImageForQuestion(id))
+    dispatch(setOptions(id))
   }
 
   handleRetry() {
+    const { dispatch, currentQuestionId } = this.props
     dispatch(resetErrorMessage())
-    this.createNewQuestion()
-  }
-
-  createNewQuestion() {
-    const { dispatch, currentQuestionId, question } = this.props
-    dispatch(generateNewQuestion(currentQuestionId))
-    dispatch(loadImageForQuestion(currentQuestionId))
-    dispatch(setOptions(currentQuestionId))
+    this.populateQuestionAndOptions(currentQuestionId)
   }
 
   render() {

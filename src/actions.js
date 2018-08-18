@@ -1,5 +1,6 @@
 export const CHANGE_QUESTION_ID = 'CHANGE_QUESTION_ID'
 export const ADD_QUESTION = 'ADD_QUESTION'
+export const GENERATE_QUESTION = 'GENERATE_QUESTION'
 
 export const FETCH_POSTS = 'FETCH_POSTS'
 export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL'
@@ -81,9 +82,14 @@ export const resetGame = () => (dispatch, getState) => {
   }
 }
 
+export const addNewQuestion = (id) => ({
+  type: ADD_QUESTION,
+  id
+})
+
 export const generateNewQuestion = (id) => {
   return {
-    type: ADD_QUESTION,
+    type: GENERATE_QUESTION,
     subreddit: randomElem(SUBREDDITS),
     imageUrl: null,
     guess: null,

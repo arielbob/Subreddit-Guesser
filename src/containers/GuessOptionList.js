@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
   return {
     currentQuestionId: state.currentQuestionId,
     options: state.options,
-    isVisible: !state.error || !state.isFetching
+    isVisible: !state.errorMessage && !state.isFetching
   }
 }
 
