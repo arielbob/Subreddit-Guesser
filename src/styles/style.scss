@@ -26,7 +26,7 @@ h2 {
 
 p {
   font-size: 1rem;
-  line-height: 1rem;
+  line-height: 1.25;
 }
 
 ul {
@@ -147,8 +147,9 @@ button {
 		display: inline-block;
 		margin: 0;
 		max-width: 100%;
-		text-align: left;
 		word-wrap: break-word;
+		text-align: left;
+		line-height: 1;
   }
   &__subreddit {
     margin-bottom: 0.5rem;
@@ -317,6 +318,7 @@ button {
     }
   }
   &__text {
+		text-align: center;
     margin: 0;
     color: #fff;
   }
