@@ -3,6 +3,9 @@ $incorrect-red: #ec3c3c;
 
 // TODO: move colors, dimensions, etc. to variables
 // TODO: do mobile styles
+// TODO: do mobile styles for buttons
+// TODO: change options to flexbox
+// TODO: move score on mobile
 
 * {
   box-sizing: border-box;
@@ -50,31 +53,59 @@ button {
   grid-template-columns: 250px 550px;
   grid-template-rows: auto 600px auto;
   grid-gap: 0.5rem;
+  grid-template-areas:
+    "history-title question-title"
+    "left-sidebar question-image"
+    "reset options";
   justify-content: center;
   &__history-title, &__question-title {
     color: #fff;
     margin: 0;
   }
+  &__history-title {
+    grid-area: history-title;
+  }
+  &__question-title {
+    grid-area: question-title;
+  }
   &__question-title {
     text-align: center;
   }
-	@media (max-width: 840px) {
-		& {
-			margin: 3rem;
-			grid-template-columns: 1fr 2fr;
-			grid-template-rows: auto 550px auto;
-		}
-	}
+  @media (max-width: 840px) {
+    & {
+      margin: 3rem;
+      grid-template-columns: 1fr 2fr;
+      grid-template-rows: auto 550px auto;
+    }
+  }
+  @media (max-width: 630px) {
+    & {
+      margin: 0.5rem;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 500px minmax(100px, auto) auto 500px auto;
+      grid-template-areas:
+        "question-title"
+        "question-image"
+        "options"
+        "history-title"
+        "left-sidebar"
+        "reset";
+    }
+  }
+  @media (max-width: 320px) {
+    grid-template-rows: auto 300px minmax(100px, auto) auto 500px auto;
+  }
 }
 
 .left {
   display: flex;
   flex-direction: column;
-	@media (max-width: 840px) {
-		& {
-			min-width: 0;
-		}
-	}
+  grid-area: left-sidebar;
+  @media (max-width: 840px) {
+    & {
+      min-width: 0;
+    }
+  }
 }
 
 .score {
@@ -124,15 +155,15 @@ button {
     max-height: 100px;
     margin-right: 0.5rem;
     border-radius: 3px;
-		@media (max-width: 840px) {
-			& {
-				max-width: 50px;
-			}
-		}
+    @media (max-width: 840px) {
+      & {
+        max-width: 50px;
+      }
+    }
   }
   &__info {
     text-align: right;
-		min-width: 0;
+    min-width: 0;
     max-width: 160px;
   }
   &__title {
@@ -144,19 +175,19 @@ button {
     margin-bottom: 0.25rem;
   }
   &__subreddit, &__guess {
-		display: inline-block;
-		margin: 0;
-		max-width: 100%;
-		word-wrap: break-word;
-		text-align: left;
-		line-height: 1;
+    display: inline-block;
+    margin: 0;
+    max-width: 100%;
+    word-wrap: break-word;
+    text-align: left;
+    line-height: 1;
   }
   &__subreddit {
     margin-bottom: 0.5rem;
   }
   &__guess {
     display: inline-block;
-		text-transform: lowercase;
+    text-transform: lowercase;
     color: #fff;
     padding: 2px 8px;
     border-radius: 15px;
@@ -180,6 +211,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  grid-area: question-image;
   width: 100%;
   height: 100%;
   padding: 10px;
@@ -188,15 +220,15 @@ button {
     height: 100%;
   }
   &__container {
-		// flex styles for browsers that don't support fit-content
-		display: flex;
-		justify-content: center;
-		align-items: center;
+    // flex styles for browsers that don't support fit-content
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     width: 100%;
-  	height: 100%;
-  	max-width: fit-content;
-  	max-height: fit-content;
+    height: 100%;
+    max-width: fit-content;
+    max-height: fit-content;
     &--has-placeholder {
       max-width: none;
     }
@@ -225,15 +257,16 @@ button {
 }
 
 @keyframes placeholder-shimmer {
-	0% {
-		background-position: -500px 0;
-	}
-	100% {
-		background-position: 500px 0;
-	}
+  0% {
+    background-position: -500px 0;
+  }
+  100% {
+    background-position: 500px 0;
+  }
 }
 
 .options {
+  grid-area: options;
   text-align: center;
   margin-bottom: 0.5rem;
   &__option {
@@ -263,6 +296,7 @@ button {
 }
 
 .reset {
+  grid-area: reset;
   text-align: right;
   &__btn {
     font-size: 1rem;
@@ -305,6 +339,7 @@ button {
   position: absolute;
   left: 50%;
   top: 0;
+  z-index: 50;
   &__message {
     border-radius: 0 0 5px 5px;
     padding: 0.5rem 1rem;
@@ -318,36 +353,46 @@ button {
     }
   }
   &__text {
-		text-align: center;
+    text-align: center;
     margin: 0;
     color: #fff;
+  }
+  @media (max-width: 630px) {
+    & {
+      margin: 0 0.5rem;
+      left: 0;
+      right: 0;
+      &__message {
+        left: 0;
+      }
+    }
   }
 }
 
 // FIXME: toast height isn't always 32 px...
 .toast-enter {
-	.toast__message {
-		transform: translateY(-100%);
-	}
+  .toast__message {
+    transform: translateY(-100%);
+  }
 }
 
 .toast-enter.toast-enter-active {
-	.toast__message {
-		transform: translateY(0);
-		transition: transform 150ms ease-in;
-	}
+  .toast__message {
+    transform: translateY(0);
+    transition: transform 150ms ease-in;
+  }
 }
 
 .toast-exit {
-	.toast__message {
-		transform: translateY(0);
-		top: 0;
-	}
+  .toast__message {
+    transform: translateY(0);
+    top: 0;
+  }
 }
 
 .toast-exit.toast-exit-active {
-	.toast__message {
-		transform: translateY(-100%);
-		transition: transform 150ms ease-in;
-	}
+  .toast__message {
+    transform: translateY(-100%);
+    transition: transform 150ms ease-in;
+  }
 }
