@@ -3,8 +3,7 @@ $incorrect-red: #ec3c3c;
 
 // TODO: move colors, dimensions, etc. to variables
 // TODO: do mobile styles
-// TODO: change options to flexbox
-// TODO: move score on mobile
+// TODO: replace mobile breakpoints with actual device breakpoints
 
 * {
   box-sizing: border-box;
@@ -54,7 +53,7 @@ button {
   grid-gap: 0.5rem;
   grid-template-areas:
     "history-title question-title"
-    "left-sidebar question-image"
+    "left-sidebar question"
     "reset options";
   justify-content: center;
   &__history-title, &__question-title {
@@ -81,10 +80,10 @@ button {
     & {
       margin: 0.5rem;
       grid-template-columns: 1fr;
-      grid-template-rows: auto 450px minmax(150px, auto) auto 500px auto;
+      grid-template-rows: auto 420px minmax(7rem, auto) auto 500px auto;
       grid-template-areas:
         "question-title"
-        "question-image"
+        "question"
         "options"
         "history-title"
         "left-sidebar"
@@ -93,6 +92,17 @@ button {
   }
   @media (max-width: 320px) {
     grid-template-rows: auto 300px minmax(100px, auto) auto 500px auto;
+  }
+  @media (orientation: landscape) and (max-width: 768px) {
+    margin: 0.5rem;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto minmax(250px, 80vh) auto 100vh auto;
+    grid-template-areas:
+      "question-title ."
+      "question options"
+      "history-title history-title"
+      "left-sidebar left-sidebar"
+      "reset reset";
   }
 }
 
@@ -200,6 +210,7 @@ button {
 }
 
 .question {
+  grid-area: question;
   height: 100%;
   text-align: center;
   background-color: #fff;
@@ -210,7 +221,6 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: question-image;
   width: 100%;
   height: 100%;
   padding: 10px;
@@ -272,6 +282,14 @@ button {
     display: inline-block;
     &:not(:last-child) {
       margin-right: 10px;
+      @media (orientation: landscape) and (max-width: 768px) {
+        margin-right: 0;
+      }
+    }
+    @media (orientation: landscape) and (max-width: 768px) {
+      & {
+        display: block;
+      }
     }
   }
   &__btn {
@@ -294,6 +312,11 @@ button {
     @media (max-width: 840px) {
       & {
         line-height: 1.5rem;
+      }
+    }
+    @media (orientation: landscape) and (max-width: 768px) {
+      & {
+        width: 100%;
       }
     }
   }
