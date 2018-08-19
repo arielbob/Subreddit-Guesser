@@ -58,11 +58,23 @@ button {
   &__question-title {
     text-align: center;
   }
+	@media (max-width: 840px) {
+		& {
+			margin: 3rem;
+			grid-template-columns: 1fr 2fr;
+			grid-template-rows: auto 550px auto;
+		}
+	}
 }
 
 .left {
   display: flex;
   flex-direction: column;
+	@media (max-width: 840px) {
+		& {
+			min-width: 0;
+		}
+	}
 }
 
 .score {
@@ -112,6 +124,11 @@ button {
     max-height: 100px;
     margin-right: 0.5rem;
     border-radius: 3px;
+		@media (max-width: 840px) {
+			& {
+				max-width: 50px;
+			}
+		}
   }
   &__info {
     text-align: right;
