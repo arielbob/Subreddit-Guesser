@@ -3,7 +3,6 @@ $incorrect-red: #ec3c3c;
 
 // TODO: move colors, dimensions, etc. to variables
 // TODO: do mobile styles
-// TODO: do mobile styles for buttons
 // TODO: change options to flexbox
 // TODO: move score on mobile
 
@@ -82,7 +81,7 @@ button {
     & {
       margin: 0.5rem;
       grid-template-columns: 1fr;
-      grid-template-rows: auto 500px minmax(100px, auto) auto 500px auto;
+      grid-template-rows: auto 450px minmax(150px, auto) auto 500px auto;
       grid-template-areas:
         "question-title"
         "question-image"
@@ -292,6 +291,11 @@ button {
       transform: translateY(4px);
       box-shadow: none;
     }
+    @media (max-width: 840px) {
+      & {
+        line-height: 1.5rem;
+      }
+    }
   }
 }
 
@@ -313,6 +317,10 @@ button {
     &:active {
       transform: translateY(4px);
       box-shadow: none;
+    }
+    @media (max-width: 840px) {
+      width: 100%;
+      padding: 0.5rem;
     }
   }
 }
