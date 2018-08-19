@@ -115,6 +115,7 @@ button {
   }
   &__info {
     text-align: right;
+		min-width: 0;
     max-width: 160px;
   }
   &__title {
@@ -126,19 +127,21 @@ button {
     margin-bottom: 0.25rem;
   }
   &__subreddit, &__guess {
-    margin: 0;
-    word-wrap: break-word;
+		display: inline-block;
+		margin: 0;
+		max-width: 100%;
+		text-align: left;
+		word-wrap: break-word;
   }
   &__subreddit {
     margin-bottom: 0.5rem;
   }
   &__guess {
     display: inline-block;
-    max-width: 100%;
+		text-transform: lowercase;
     color: #fff;
     padding: 2px 8px;
     border-radius: 15px;
-    text-transform: lowercase;
   }
   &--correct &__guess {
     background-color: $correct-green;
