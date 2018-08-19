@@ -324,20 +324,30 @@ button {
   }
 }
 
+// FIXME: toast height isn't always 32 px...
 .toast-enter {
-  transform: translateY(-32px);
+	.toast__message {
+		transform: translateY(-100%);
+	}
 }
 
 .toast-enter.toast-enter-active {
-  transform: translateY(0);
-  transition: transform 150ms ease-in;
+	.toast__message {
+		transform: translateY(0);
+		transition: transform 150ms ease-in;
+	}
 }
 
 .toast-exit {
-  transform: translateY(0);
+	.toast__message {
+		transform: translateY(0);
+		top: 0;
+	}
 }
 
 .toast-exit.toast-exit-active {
-  transform: translateY(-32px);
-  transition: transform 150ms ease-in;
+	.toast__message {
+		transform: translateY(-100%);
+		transition: transform 150ms ease-in;
+	}
 }
