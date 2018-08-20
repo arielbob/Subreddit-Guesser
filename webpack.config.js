@@ -11,7 +11,7 @@ module.exports = {
 	mode: isDev ? 'development' : 'production',
 	entry: './src/index.js',
 	output: {
-		filename: 'js/bundle.js',
+		filename: 'js/bundle.[hash].js',
 		path: path.resolve(__dirname, 'dist'),
 		publicPath: '/'
 	},
@@ -23,6 +23,7 @@ module.exports = {
 				use: [
 					isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
 					'css-loader',
+					'postcss-loader',
 					'sass-loader'
 				]
 			},
@@ -39,8 +40,7 @@ module.exports = {
 		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
 			template: 'index.html',
-			title: 'Subreddit Guesser',
-			inject: 'body'
+			inject: true
 		}),
 		new MiniCssExtractPlugin({
       filename: 'css/' + (isDev ? '[name].css' : '[name].[hash].css')
