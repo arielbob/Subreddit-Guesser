@@ -1,0 +1,17 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &__message {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+  &__retry-btn {
+    font-size: 1rem;
+    padding: 0 0.5em;
+    border-radius: 3px;
+    line-height: 1.5rem;
+    margin: 0;
+  }
+}

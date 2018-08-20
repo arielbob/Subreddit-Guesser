@@ -1,0 +1,17 @@
+.question-history {
+  flex: 1;
+  min-height: 0;
+  &__list {
+    height: 100%;
+    border-radius: 5px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #fff;
+  }
+  &__item:nth-child(even) {
+    background-color: #eeeeee;
+  }
+  &__item:nth-child(odd) {
+    background-color: #fff;
+  }
+}

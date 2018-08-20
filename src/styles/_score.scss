@@ -1,0 +1,17 @@
+.score {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+  text-align: right;
+  margin-bottom: 0.5rem;
+  p {
+    margin: 0;
+  }
+  .score__title {
+    color: #535353;
+    font-family: 'Roboto Mono', monospace;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    margin-bottom: 0.125rem;
+  }
+}

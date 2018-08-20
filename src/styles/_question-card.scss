@@ -1,0 +1,53 @@
+.question-card {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: space-between;
+  &__image {
+    align-self: center;
+    height: auto;
+    max-width: 60px;
+    max-height: 100px;
+    margin-right: 0.5rem;
+    border-radius: 3px;
+    @include breakpoint(laptop) {
+      max-width: 50px;
+    }
+  }
+  &__info {
+    text-align: right;
+    min-width: 0;
+    max-width: 160px;
+  }
+  &__title {
+    color: #535353;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+  &__subreddit, &__guess {
+    display: inline-block;
+    margin: 0;
+    max-width: 100%;
+    word-wrap: break-word;
+    text-align: left;
+    line-height: 1;
+  }
+  &__subreddit {
+    margin-bottom: 0.5rem;
+  }
+  &__guess {
+    display: inline-block;
+    text-transform: lowercase;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 15px;
+  }
+  &--correct &__guess {
+    background-color: $correct-green;
+  }
+  &--incorrect &__guess {
+    background-color: $incorrect-red;
+  }
+}

@@ -1,0 +1,8 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  grid-area: sidebar;
+  @include breakpoint(laptop) {
+    min-width: 0;
+  }
+}

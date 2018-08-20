@@ -1,0 +1,42 @@
+.options {
+  grid-area: options;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  &__option {
+    display: inline-block;
+    &:not(:last-child) {
+      margin-right: 10px;
+      @include breakpoint(mobile-landscape) {
+        margin-right: 0;
+      }
+    }
+    @include breakpoint(mobile-landscape) {
+      display: block;
+    }
+  }
+  &__btn {
+    font-size: 1rem;
+    line-height: 1rem;
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 0.75rem;
+    background-color: $option-btn;
+    box-shadow: $elevated-btn-shadow $option-btn-shadow;
+    transition: 0.2s;
+    &:hover {
+      background-color: $option-btn-light;
+      box-shadow: $elevated-btn-shadow $option-btn-shadow, $light-shadow-elevated;
+      transform: translateY(-1px);
+    }
+    &:active {
+      transform: translateY(4px);
+      box-shadow: none;
+    }
+    @include breakpoint(laptop) {
+      line-height: 1.5rem;
+    }
+    @include breakpoint(mobile-landscape) {
+      width: 100%;
+    }
+  }
+}

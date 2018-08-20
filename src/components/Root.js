@@ -12,7 +12,7 @@ const Root = () => (
     <div className='game-container'>
       <h2 className='game-container__history-title'>History</h2>
       <h2 className='game-container__question-title'>Whence does this come?</h2>
-      <section className='left'>
+      <section className='sidebar'>
         <Score />
         <HistoryCardList />
       </section>

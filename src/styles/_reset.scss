@@ -1,0 +1,26 @@
+.reset {
+  grid-area: reset;
+  text-align: right;
+  &__btn {
+    font-size: 1rem;
+    padding: 0 0.5em;
+    border-radius: 3px;
+    line-height: 1.5rem;
+    background-color: $reset-btn;
+    box-shadow: $elevated-btn-shadow $reset-btn-shadow;
+    transition: 0.2s;
+    &:hover {
+      background-color: $reset-btn-light;
+      box-shadow: $elevated-btn-shadow $reset-btn-shadow, $light-shadow-elevated;
+      transform: translateY(-1px);
+    }
+    &:active {
+      transform: translateY(4px);
+      box-shadow: none;
+    }
+    @include breakpoint(laptop) {
+      width: 100%;
+      padding: 0.5rem;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+.question {
+  grid-area: question;
+  height: 100%;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 5px;
+  @include breakpoint(tablet) {
+    justify-self: center;
+  }
+}
