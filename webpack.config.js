@@ -1,25 +1,30 @@
 const path = require('path')
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+
+const isDev = process.env.NODE_ENV.trim() !== 'production'
 
 module.exports = {
-	mode: process.env.NODE_ENV.trim() == 'production' ? 'production' : 'development',
+	mode: isDev ? 'development' : 'production',
 	entry: './src/index.js',
 	output: {
-		filename: 'bundle.js',
+		filename: 'js/bundle.js',
 		path: path.resolve(__dirname, 'dist'),
 		publicPath: '/'
 	},
-	devtool: 'cheap-module-source-map',
+	devtool: isDev && 'cheap-module-source-map',
 	module: {
 		rules: [
 			{
-				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
-			},
-			{
-				test: /\.scss$/,
-				use: ['style-loader', 'css-loader', 'sass-loader']
+				test: /\.(sc|sa|c)ss$/,
+				use: [
+					isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+					'css-loader',
+					'sass-loader'
+				]
 			},
 			{
 				test: /\.js$/,
@@ -31,10 +36,15 @@ module.exports = {
 	plugins: [
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
+		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
 			template: 'index.html',
 			title: 'Subreddit Guesser',
 			inject: 'body'
-		})
+		}),
+		new MiniCssExtractPlugin({
+      filename: 'css/' + (isDev ? '[name].css' : '[name].[hash].css')
+    }),
+		new CopyWebpackPlugin([{ from: 'static' }])
 	]
 }
