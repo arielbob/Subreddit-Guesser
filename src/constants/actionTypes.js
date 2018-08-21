@@ -1,0 +1,20 @@
+export const CHANGE_QUESTION_ID = 'CHANGE_QUESTION_ID'
+export const ADD_QUESTION = 'ADD_QUESTION'
+export const GENERATE_QUESTION = 'GENERATE_QUESTION'
+
+export const FETCH_POSTS = 'FETCH_POSTS'
+export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL'
+export const RECEIVE_UNSEEN = 'RECEIVE_UNSEEN'
+
+export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
+export const RESET_GAME = 'RESET_GAME'
+
+export const SET_IMAGE = 'SET_IMAGE'
+export const SET_OPTIONS = 'SET_OPTIONS'
+export const ADD_GUESS = 'ADD_GUESS'
+
+export const INCREMENT_SCORE = 'INCREMENT_SCORE'
+export const RESET_SCORE = 'RESET_SCORE'
+
+export const SHOW_TOAST = 'SHOW_TOAST'
+export const HIDE_TOAST = 'HIDE_TOAST'

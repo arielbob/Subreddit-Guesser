@@ -1,33 +1,21 @@
-export const CHANGE_QUESTION_ID = 'CHANGE_QUESTION_ID'
-export const ADD_QUESTION = 'ADD_QUESTION'
-export const GENERATE_QUESTION = 'GENERATE_QUESTION'
-
-export const FETCH_POSTS = 'FETCH_POSTS'
-export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL'
-export const RECEIVE_UNSEEN = 'RECEIVE_UNSEEN'
-
-export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
-export const RESET_GAME = 'RESET_GAME'
-
-export const SET_IMAGE = 'SET_IMAGE'
-export const SET_OPTIONS = 'SET_OPTIONS'
-export const ADD_GUESS = 'ADD_GUESS'
-
-export const INCREMENT_SCORE = 'INCREMENT_SCORE'
-export const RESET_SCORE = 'RESET_SCORE'
-
-export const SHOW_TOAST = 'SHOW_TOAST'
-export const HIDE_TOAST = 'HIDE_TOAST'
-
-const SUBREDDITS = [
-  'me_irl',
-  'pics',
-  'me_irl',
-  'oldschoolcool',
-  'designporn',
-  'malefashion',
-  'earthporn'
-]
+import {
+  ADD_QUESTION,
+  GENERATE_QUESTION,
+  CHANGE_QUESTION_ID,
+  FETCH_POSTS,
+  FETCH_POSTS_FAIL,
+  RECEIVE_UNSEEN,
+  RESET_ERROR_MESSAGE,
+  RESET_GAME,
+  SET_IMAGE,
+  SET_OPTIONS,
+  ADD_GUESS,
+  INCREMENT_SCORE,
+  DECREMENT_SCORE,
+  SHOW_TOAST,
+  HIDE_TOAST
+} from './constants/actionTypes'
+import SUBREDDITS from './constants/subreddits'
 
 // TODO: implement guessing                             - DONE
 // TODO: implement changing the question after guessing - DONE

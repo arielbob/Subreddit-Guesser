@@ -16,7 +16,7 @@ import {
   DECREMENT_SCORE,
   SHOW_TOAST,
   HIDE_TOAST
-} from './actions'
+} from './constants/actionTypes'
 
 function errorMessage(state = '', action) {
   const { type, error } = action
