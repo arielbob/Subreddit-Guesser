@@ -161,7 +161,7 @@ const fetchPosts = () => ({
   type: FETCH_POSTS
 })
 
-const imagePattern = /\.(jpe?g|png|gif)$/g
+const imagePattern = /\.(jpe?g|png|gif)$/
 const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 20) => {
   return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}&after=${after}`)
     .then(res => {
@@ -175,7 +175,7 @@ const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 2
         return imagePattern.test(url) && !over_18;
       })
 
-      // TODO: test this probably
+      // returns an array of posts with posts that have images we've seen filtered out
       const unseenPosts = posts.filter(post => !seenImages.includes(post.data.url))
 
       if (unseenPosts.length) {
@@ -228,7 +228,7 @@ export const loadImageForQuestion = (id) => (dispatch, getState) => {
     dispatch(fetchPosts())
 
     // TODO: might want to splice out the current id when passed into here?
-    fetchUnseenPosts(subreddit, seenImages)
+    return fetchUnseenPosts(subreddit, seenImages)
       .then(posts => {
         const images = posts.map(post => post.data.url)
         dispatch(receiveUnseenImages(subreddit, images))  // put them in the cache
