@@ -163,7 +163,7 @@ const fetchPosts = () => ({
 
 const imagePattern = /\.(jpe?g|png|gif)$/
 const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 20) => {
-  return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}&after=${after}`)
+  return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}` + (after ? `&after=${after}` : ''))
     .then(res => {
       if (!res.ok) throw Error(`Error ${res.status}`)
       return res
