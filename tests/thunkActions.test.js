@@ -14,11 +14,12 @@ const origRandom = global.Math.random
 global.Math.random = () => 0
 afterAll(() => { global.Math.random = origRandom })
 
+afterEach(() => {
+  fetchMock.reset()
+  fetchMock.restore()
+})
+
 describe('loadImageForQuestion thunk', () => {
-  afterEach(() => {
-    fetchMock.reset()
-    fetchMock.restore()
-  })
   const images = ['a.png', 'b.jpg', 'c.gif', 'd.jpeg']
   const subreddit = 'pics'
 
