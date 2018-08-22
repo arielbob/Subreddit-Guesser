@@ -23,6 +23,8 @@ const store = createStore(
   )
 )
 
+// TODO: write tests
+
 // import { generateNewQuestion, loadImageForQuestion, addGuess, changeQuestionId, resetGame } from './actions'
 // let currentQuestionId = store.getState().currentQuestionId
 // store.dispatch(generateNewQuestion(currentQuestionId))
