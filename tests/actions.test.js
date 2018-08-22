@@ -1,27 +1,65 @@
-import * as actions from '../src/actions'
-import * as types from '../src/constants/actionTypes'
+import * as Actions from '../src/actions'
+import * as Types from '../src/constants/actionTypes'
+import Subreddits from '../src/constants/subreddits'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 
+// make Math.random() deterministic
+const origRandom = global.Math.random
+global.Math.random = () => 0
+afterAll(() => { global.Math.random = origRandom })
+
 describe('actions', () => {
-  it('should create an action to add a question', () => {
+  it('creates an action to add a question', () => {
     const id = 0
     const expectedAction = {
-      type: types.ADD_QUESTION,
+      type: Types.ADD_QUESTION,
       id
     }
-    expect(actions.addNewQuestion(id)).toEqual(expectedAction)
+
+    expect(Actions.addNewQuestion(id)).toEqual(expectedAction)
+  })
+
+  it('creates an action to generate a new question with a random subreddit', () => {
+    const id = 0
+    const expectedAction = {
+      type: Types.GENERATE_QUESTION,
+      subreddit: Subreddits[0],
+      imageUrl: '',
+      guess: '',
+      id
+    }
+
+    expect(Actions.generateNewQuestion(id)).toEqual(expectedAction)
+  })
+
+  it('creates an action to reset the error message', () => {
+    const expectedAction = {
+      type: Types.RESET_ERROR_MESSAGE
+    }
+
+    expect(Actions.resetErrorMessage()).toEqual(expectedAction)
+  })
+
+  it('creates an action to change the current question id', () => {
+    const id = 0
+    const expectedAction = {
+      type: Types.CHANGE_QUESTION_ID,
+      id
+    }
+
+    expect(Actions.changeQuestionId(id)).toEqual(expectedAction)
   })
 })
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-// async actions
-describe('loadImageForQuestion(id) thunk', () => {
-  global.Math.random = () => 0;
+// async actions / thunks
+
+describe('loadImageForQuestion thunk', () => {
   afterEach(() => {
     fetchMock.reset()
     fetchMock.restore()
@@ -42,16 +80,16 @@ describe('loadImageForQuestion(id) thunk', () => {
 
     const id = 0
     const expectedActions = [
-      {type: types.FETCH_POSTS},
-      {type: types.RECEIVE_UNSEEN, subreddit, unseenImages: ['a.png', 'b.jpg', 'c.gif']},
-      {type: types.SET_IMAGE, imageUrl: 'a.png', id, subreddit}
+      {type: Types.FETCH_POSTS},
+      {type: Types.RECEIVE_UNSEEN, subreddit, unseenImages: ['a.png', 'b.jpg', 'c.gif']},
+      {type: Types.SET_IMAGE, imageUrl: 'a.png', id, subreddit}
     ]
     const store = mockStore({
       questionsById: {0: {subreddit}},
       cachedImagesBySubreddit: {}
     })
 
-    return store.dispatch(actions.loadImageForQuestion(id)).then(() => {
+    return store.dispatch(Actions.loadImageForQuestion(id)).then(() => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
@@ -59,7 +97,7 @@ describe('loadImageForQuestion(id) thunk', () => {
   it('creates SET_IMAGE when called with an existing cache for the subreddit', () => {
     const id = 0;
     const expectedActions = [
-      {type: types.SET_IMAGE, imageUrl: images[0], id, subreddit}
+      {type: Types.SET_IMAGE, imageUrl: images[0], id, subreddit}
     ]
     const store = mockStore({
       questionsById: {0: {subreddit}},
@@ -67,7 +105,7 @@ describe('loadImageForQuestion(id) thunk', () => {
     })
 
     // we don't return this since loadImageForQuestion only returns a promise when it fetches
-    store.dispatch(actions.loadImageForQuestion(id))
+    store.dispatch(Actions.loadImageForQuestion(id))
     expect(store.getActions()).toEqual(expectedActions)
   })
 
@@ -94,9 +132,9 @@ describe('loadImageForQuestion(id) thunk', () => {
 
     const id = 3
     const expectedActions = [
-      {type: types.FETCH_POSTS},
-      {type: types.RECEIVE_UNSEEN, subreddit, unseenImages: [images[3]]},
-      {type: types.SET_IMAGE, imageUrl: images[3], id, subreddit}
+      {type: Types.FETCH_POSTS},
+      {type: Types.RECEIVE_UNSEEN, subreddit, unseenImages: [images[3]]},
+      {type: Types.SET_IMAGE, imageUrl: images[3], id, subreddit}
     ]
     const store = mockStore({
       questionsById: {
@@ -108,7 +146,7 @@ describe('loadImageForQuestion(id) thunk', () => {
       cachedImagesBySubreddit: {}
     })
 
-    return store.dispatch(actions.loadImageForQuestion(id)).then(() => {
+    return store.dispatch(Actions.loadImageForQuestion(id)).then(() => {
       expect(fetchMock.calls().length).toEqual(2)
       expect(store.getActions()).toEqual(expectedActions)
     })
@@ -122,12 +160,12 @@ describe('loadImageForQuestion(id) thunk', () => {
       cachedImagesBySubreddit: {}
     })
     const expectedActions = [
-      {type: types.FETCH_POSTS},
-      {type: types.FETCH_POSTS_FAIL, error: 'There was an error fetching images.. (Error 500)'}
+      {type: Types.FETCH_POSTS},
+      {type: Types.FETCH_POSTS_FAIL, error: 'There was an error fetching images.. (Error 500)'}
     ]
 
     const id = 0
-    return store.dispatch(actions.loadImageForQuestion(id)).then(() => {
+    return store.dispatch(Actions.loadImageForQuestion(id)).then(() => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
@@ -144,14 +182,97 @@ describe('loadImageForQuestion(id) thunk', () => {
       cachedImagesBySubreddit: {}
     })
     const expectedActions = [
-      {type: types.FETCH_POSTS},
-      {type: types.FETCH_POSTS_FAIL, error: 'There was an error fetching images.. (Number of tries exceeded)'}
+      {type: Types.FETCH_POSTS},
+      {type: Types.FETCH_POSTS_FAIL, error: 'There was an error fetching images.. (Number of tries exceeded)'}
     ]
 
     const id = 0
-    return store.dispatch(actions.loadImageForQuestion(id)).then(() => {
+    return store.dispatch(Actions.loadImageForQuestion(id)).then(() => {
       expect(fetchMock.calls().length).toEqual(20)
       expect(store.getActions()).toEqual(expectedActions)
     })
+  })
+})
+
+describe('addGuess thunk', () => {
+  beforeEach(() => jest.useFakeTimers())
+  const id = 0
+  const subreddit = 'pics'
+
+  it('creates ADD_GUESS, SHOW_TOAST, INCREMENT_SCORE, and, after 2 seconds, HIDE_TOAST when the guess is correct', () => {
+    const store = mockStore({
+      questionsById: {0: {subreddit}}
+    })
+    const beforeTimeout = [
+      {type: Types.ADD_GUESS, id, guess: subreddit},
+      {type: Types.SHOW_TOAST, text: 'Correct!', color: 'green'},
+      {type: Types.INCREMENT_SCORE}
+    ]
+    const afterTimeout = [
+      {type: Types.HIDE_TOAST}
+    ]
+
+    store.dispatch(Actions.addGuess(id, subreddit))
+    expect(store.getActions()).toEqual(beforeTimeout)
+    jest.runAllTimers()
+    expect(store.getActions()).toEqual(beforeTimeout.concat(afterTimeout))
+  })
+
+  it('creates ADD_GUESS, SHOW_TOAST, and, after 2 seconds, HIDE_TOAST when the guess is incorrect', () => {
+    const wrongGuess = 'me_irl'
+    const store = mockStore({
+      questionsById: {0: {subreddit}}
+    })
+    const beforeTimeout = [
+      {type: Types.ADD_GUESS, id, guess: wrongGuess},
+      {type: Types.SHOW_TOAST, text: 'You\'re wrong! The answer was /r/' + subreddit + '...', color: 'red'},
+    ]
+    const afterTimeout = [
+      {type: Types.HIDE_TOAST}
+    ]
+
+    store.dispatch(Actions.addGuess(id, wrongGuess))
+    expect(store.getActions()).toEqual(beforeTimeout)
+    jest.runAllTimers()
+    expect(store.getActions()).toEqual(beforeTimeout.concat(afterTimeout))
+  })
+})
+
+describe('setOptions thunk', () => {
+  it('creates SET_OPTIONS with a randomized array of 5 subreddits including the question\'s subreddit', () => {
+    const store = mockStore({
+      questionsById: {0: {subreddit: Subreddits[0]}}
+    })
+    const expectedActions = [
+      {type: Types.SET_OPTIONS, options: [Subreddits[0], Subreddits[1], Subreddits[2], Subreddits[3], Subreddits[4]]}
+    ]
+
+    const id = 0
+    store.dispatch(Actions.setOptions(id))
+    expect(store.getActions()).toEqual(expectedActions)
+  })
+})
+
+describe('reset thunk', () => {
+  it('creates an action to reset the game when it is not fetching', () => {
+    const store = mockStore({
+      isFetching: false
+    })
+    const expectedActions = [
+      {type: Types.RESET_GAME}
+    ]
+
+    store.dispatch(Actions.resetGame())
+    expect(store.getActions()).toEqual(expectedActions)
+  })
+
+  it('does not create an action to reset the game if it is fetching', () => {
+    const store = mockStore({
+      isFetching: true
+    })
+    const expectedActions = []
+
+    store.dispatch(Actions.resetGame())
+    expect(store.getActions()).toEqual(expectedActions)
   })
 })

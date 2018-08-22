@@ -41,9 +41,9 @@ import SUBREDDITS from './constants/subreddits'
 // actions do not necessarily need to be pure
 // i think it's just better if they are for testing or something
 // but they aren't always pure which can be seen in the cases where we need random numbers or api calls
-const randomElem = (arr) => (arr[Math.floor(Math.random() * arr.length)])
+const _randomElem = (arr) => (arr[Math.floor(Math.random() * arr.length)])
 
-const generateOptions = (subreddit, numOptions) => {
+const _generateOptions = (subreddit, numOptions) => {
   if (numOptions > SUBREDDITS.length) numOptions = SUBREDDITS.length
 
   let removeStr = (str) => (elem) => elem != str
@@ -55,7 +55,7 @@ const generateOptions = (subreddit, numOptions) => {
     if (i == subIndex) {
       options.push(subreddit)
     } else {
-      let randSub = randomElem(subreddits)
+      let randSub = _randomElem(subreddits)
       subreddits = subreddits.filter(removeStr(randSub))    // remove the selected sub from the eligible subreddit list
       options.push(randSub)
     }
@@ -78,9 +78,9 @@ export const addNewQuestion = (id) => ({
 export const generateNewQuestion = (id) => {
   return {
     type: GENERATE_QUESTION,
-    subreddit: randomElem(SUBREDDITS),
-    imageUrl: null,
-    guess: null,
+    subreddit: _randomElem(SUBREDDITS),
+    imageUrl: '',
+    guess: '',
     id
   }
 }
@@ -92,7 +92,7 @@ export const setOptions = (id) => (dispatch, getState) => {
 
   dispatch({
     type: SET_OPTIONS,
-    options: generateOptions(subreddit, 5)
+    options: _generateOptions(subreddit, 5)
   })
 }
 
@@ -102,30 +102,26 @@ export const setOptions = (id) => (dispatch, getState) => {
 // we could fix this by having some type of array or object of current toasts
 // with hideToast taking the id of the toast to hide
 let toastTimeout;
-const displayToast = (text, color, duration = 2000) => (dispatch) => {
+const _displayToast = (text, color, duration = 2000) => (dispatch) => {
   clearTimeout(toastTimeout)
   toastTimeout = setTimeout(() => {
-    dispatch(hideToast())
+    dispatch(_hideToast())
   }, duration)
-  dispatch(showToast(text, color))
+  dispatch(_showToast(text, color))
 }
 
-const showToast = (text, color) => ({
+const _showToast = (text, color) => ({
   type: SHOW_TOAST,
   text,
   color
 })
 
-const hideToast = () => ({
+const _hideToast = () => ({
   type: HIDE_TOAST
 })
 
-const incrementScore = () => ({
+const _incrementScore = () => ({
   type: INCREMENT_SCORE
-})
-
-const resetScore = () => ({
-  type: RESET_SCORE
 })
 
 export const changeQuestionId = (id) => {
@@ -144,10 +140,10 @@ export const addGuess = (id, guess) => (dispatch, getState) => {
 
   const { subreddit } = getState().questionsById[id]
   if (subreddit == guess) {
-    dispatch(displayToast('Correct!', 'green'))
-    dispatch(incrementScore())
+    dispatch(_displayToast('Correct!', 'green'))
+    dispatch(_incrementScore())
   } else {
-    dispatch(displayToast('You\'re wrong! The answer was /r/' + subreddit + '...', 'red'))
+    dispatch(_displayToast('You\'re wrong! The answer was /r/' + subreddit + '...', 'red'))
   }
 }
 
@@ -157,12 +153,12 @@ export const resetErrorMessage = () => ({
 
 // async actions
 
-const fetchPosts = () => ({
+const _fetchPosts = () => ({
   type: FETCH_POSTS
 })
 
 const imagePattern = /\.(jpe?g|png|gif)$/
-const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 20) => {
+const _fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 20) => {
   return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}` + (after ? `&after=${after}` : ''))
     .then(res => {
       if (!res.ok) throw Error(`Error ${res.status}`)
@@ -187,21 +183,21 @@ const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 2
         // so passing it into the api request will only give us posts after that post
         if (--numTries == 0) throw new Error("Number of tries exceeded")
         const { after } = json.data
-        return fetchUnseenPosts(subreddit, seenImages, limit, after, numTries)
+        return _fetchUnseenPosts(subreddit, seenImages, limit, after, numTries)
       }
     })
 }
 
-const receiveUnseenImages = (subreddit, unseenImages) => ({
+const _receiveUnseenImages = (subreddit, unseenImages) => ({
   type: RECEIVE_UNSEEN,
   subreddit,
   unseenImages
 })
 
 // we pass in subreddit here so that we can remove it from cachedImagesBySubreddit
-const setRandomImage = (id, subreddit, images) => ({
+const _setRandomImage = (id, subreddit, images) => ({
   type: SET_IMAGE,
-  imageUrl: randomElem(images),
+  imageUrl: _randomElem(images),
   id,
   subreddit
 })
@@ -225,14 +221,14 @@ export const loadImageForQuestion = (id) => (dispatch, getState) => {
     .map(question => question.imageUrl)
 
   if (!cachedImages || !cachedImages.length) {
-    dispatch(fetchPosts())
+    dispatch(_fetchPosts())
 
     // TODO: might want to splice out the current id when passed into here?
-    return fetchUnseenPosts(subreddit, seenImages)
+    return _fetchUnseenPosts(subreddit, seenImages)
       .then(posts => {
         const images = posts.map(post => post.data.url)
-        dispatch(receiveUnseenImages(subreddit, images))  // put them in the cache
-        dispatch(setRandomImage(id, subreddit, images))   // set the image for the question
+        dispatch(_receiveUnseenImages(subreddit, images))  // put them in the cache
+        dispatch(_setRandomImage(id, subreddit, images))   // set the image for the question
       })
       .catch(err => {
         dispatch({
@@ -241,6 +237,6 @@ export const loadImageForQuestion = (id) => (dispatch, getState) => {
         })
       })
   } else {
-    dispatch(setRandomImage(id, subreddit, cachedImages))
+    dispatch(_setRandomImage(id, subreddit, cachedImages))
   }
 }
