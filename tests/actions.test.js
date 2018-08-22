@@ -95,8 +95,8 @@ describe('loadImageForQuestion(id) thunk', () => {
     const id = 3
     const expectedActions = [
       {type: types.FETCH_POSTS},
-      {type: types.RECEIVE_UNSEEN, subreddit, unseenImages: ['d.jpeg']},
-      {type: types.SET_IMAGE, imageUrl: 'd.jpeg', id, subreddit}
+      {type: types.RECEIVE_UNSEEN, subreddit, unseenImages: [images[3]]},
+      {type: types.SET_IMAGE, imageUrl: images[3], id, subreddit}
     ]
     const store = mockStore({
       questionsById: {
@@ -107,9 +107,50 @@ describe('loadImageForQuestion(id) thunk', () => {
       },
       cachedImagesBySubreddit: {}
     })
-    
+
     return store.dispatch(actions.loadImageForQuestion(id)).then(() => {
       expect(fetchMock.calls().length).toEqual(2)
+      expect(store.getActions()).toEqual(expectedActions)
+    })
+  })
+
+  it('creates FETCH_POSTS_FAIL on response errors', () => {
+    fetchMock.getOnce('*', 500)
+
+    const store = mockStore({
+      questionsById: {0: {subreddit}},
+      cachedImagesBySubreddit: {}
+    })
+    const expectedActions = [
+      {type: types.FETCH_POSTS},
+      {type: types.FETCH_POSTS_FAIL, error: 'There was an error fetching images.. (Error 500)'}
+    ]
+
+    const id = 0
+    return store.dispatch(actions.loadImageForQuestion(id)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions)
+    })
+  })
+
+  it('creates FETCH_POSTS_FAIL when no posts are found within 20 fetches', () => {
+    fetchMock.get('*', {
+      data: {
+        children: []
+      }
+    }, {repeat: 20})
+
+    const store = mockStore({
+      questionsById: {0: {subreddit}},
+      cachedImagesBySubreddit: {}
+    })
+    const expectedActions = [
+      {type: types.FETCH_POSTS},
+      {type: types.FETCH_POSTS_FAIL, error: 'There was an error fetching images.. (Number of tries exceeded)'}
+    ]
+
+    const id = 0
+    return store.dispatch(actions.loadImageForQuestion(id)).then(() => {
+      expect(fetchMock.calls().length).toEqual(20)
       expect(store.getActions()).toEqual(expectedActions)
     })
   })

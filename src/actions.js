@@ -185,9 +185,9 @@ const fetchUnseenPosts = (subreddit, seenImages, limit = 50, after, numTries = 2
         // we search the next chunk which is delimited by the after property
         // the after property is the id of the last post of the chunk
         // so passing it into the api request will only give us posts after that post
-        if (numTries == 0) throw new Error("Number of tries exceeded")
+        if (--numTries == 0) throw new Error("Number of tries exceeded")
         const { after } = json.data
-        return fetchUnseenPosts(subreddit, seenImages, limit, after, --numTries)
+        return fetchUnseenPosts(subreddit, seenImages, limit, after, numTries)
       }
     })
 }
