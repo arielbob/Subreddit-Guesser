@@ -79,8 +79,6 @@ export const generateNewQuestion = (id) => {
   return {
     type: GENERATE_QUESTION,
     subreddit: _randomElem(SUBREDDITS),
-    imageUrl: '',
-    guess: '',
     id
   }
 }

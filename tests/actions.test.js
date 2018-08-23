@@ -23,8 +23,6 @@ describe('actions', () => {
     const expectedAction = {
       type: Types.GENERATE_QUESTION,
       subreddit: Subreddits[0],
-      imageUrl: '',
-      guess: '',
       id
     }
 

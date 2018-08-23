@@ -42,7 +42,7 @@ export function currentQuestionId(state = 0, action) {
   }
 }
 
-export function question(state = {
+function _question(state = {
   subreddit: '',
   imageUrl: '',
   guess: '',
@@ -50,12 +50,10 @@ export function question(state = {
 }, action) {
   switch (action.type) {
     case GENERATE_QUESTION:
-      return {
+      return Object.assign({}, state, {
         subreddit: action.subreddit,
-        imageUrl: action.imageUrl,
-        guess: action.guess,
         id: action.id
-      }
+      })
     case ADD_GUESS:
       return Object.assign({}, state, {
         guess: action.guess
@@ -74,11 +72,11 @@ export function question(state = {
 // race conditions with fetches
 export function questionsById(state = {}, action) {
   switch (action.type) {
-    case ADD_GUESS:
     case GENERATE_QUESTION:
+    case ADD_GUESS:
     case SET_IMAGE:
       let newState = Object.assign({}, state)
-      newState[action.id] = question(newState[action.id], action)
+      newState[action.id] = _question(newState[action.id], action)
       return newState
     case RESET_GAME:
       return {}
@@ -90,7 +88,10 @@ export function questionsById(state = {}, action) {
 export function questionIds(state = [], action) {
   switch (action.type) {
     case ADD_QUESTION:
-      return state.concat(action.id)
+      if (!state.includes(action.id)) {
+        return state.concat(action.id)
+      }
+      return state
     case RESET_GAME:
       return []
     default:
