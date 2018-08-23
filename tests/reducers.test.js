@@ -177,7 +177,7 @@ describe('questionIds reducer', () => {
   })
 })
 
-describe('cachedImagesBySubreddit', () => {
+describe('cachedImagesBySubreddit reducer', () => {
   const reducer = reducers.cachedImagesBySubreddit
   it('returns initial state', () => {
     expect(reducer(undefined, {})).toEqual({})
@@ -223,6 +223,142 @@ describe('cachedImagesBySubreddit', () => {
       }, {type: Types.SET_IMAGE, subreddit: 'pics', imageUrl: 'c.gif'})
     ).toEqual({
       'pics': []
+    })
+  })
+})
+
+describe('options reducer', () => {
+  const reducer = reducers.options
+  it('returns initial state', () => {
+    expect(reducer(undefined, {})).toEqual([])
+  })
+
+  it('handles SET_OPTIONS', () => {
+    expect(
+      reducer([], {
+        type: Types.SET_OPTIONS,
+        options: ['me_irl', 'pics', 'oldschoolcool', 'malefashion', 'earthporn']
+      })
+    ).toEqual(['me_irl', 'pics', 'oldschoolcool', 'malefashion', 'earthporn'])
+
+    expect(
+      reducer(['me_irl', 'pics', 'oldschoolcool', 'malefashion', 'earthporn'], {
+        type: Types.SET_OPTIONS,
+        options: ['pics', 'malefashion', 'earthporn', 'me_irl', 'oldschoolcool']
+      })
+    ).toEqual(['pics', 'malefashion', 'earthporn', 'me_irl', 'oldschoolcool'])
+  })
+})
+
+describe('score reducer', () => {
+  const reducer = reducers.score
+  it('returns initial state', () => {
+    expect(reducer(undefined, {})).toEqual(0)
+  })
+
+  it('handles INCREMENT_SCORE', () => {
+    expect(
+      reducer(0, {type: Types.INCREMENT_SCORE})
+    ).toEqual(1)
+  })
+
+  it('handles RESET_GAME', () => {
+    expect(
+      reducer(3, {type: Types.RESET_GAME})
+    ).toEqual(0)
+  })
+})
+
+describe('isFetching reducer', () => {
+  const reducer = reducers.isFetching
+  it('returns initial state', () => {
+    expect(reducer(undefined, {})).toEqual(false)
+  })
+
+  it('handles FETCH_POSTS', () => {
+    expect(
+      reducer(false, {type: Types.FETCH_POSTS})
+    ).toEqual(true)
+  })
+
+  it('handles RECEIVE_UNSEEN', () => {
+    expect(
+      reducer(true, {
+        type: Types.RECEIVE_UNSEEN,
+        subreddit: 'pics',
+        unseenImages: ['a.jpg', 'b.png', 'c.gif']
+      })
+    ).toEqual(false)
+  })
+
+  it('handles FETCH_POSTS_FAIL', () => {
+    expect(
+      reducer(true, {
+        type: Types.FETCH_POSTS_FAIL,
+        error: 'Error fetching posts..'
+      })
+    ).toEqual(false)
+  })
+})
+
+describe('isToastVisible reducer', () => {
+  const reducer = reducers.isToastVisible
+  it('returns initial state', () => {
+    expect(reducer(undefined, {})).toEqual(false)
+  })
+
+  it('handles SHOW_TOAST', () => {
+    expect(
+      reducer(false, {
+        type: Types.SHOW_TOAST,
+        text: 'Correct!',
+        color: 'green'
+      })
+    ).toEqual(true)
+  })
+
+  it('handles HIDE_TOAST', () => {
+    expect(
+      reducer(true, {
+        type: Types.HIDE_TOAST
+      })
+    ).toEqual(false)
+  })
+})
+
+describe('toast reducer', () => {
+  const reducer = reducers.toast
+  it('returns initial state', () => {
+    expect(reducer(undefined, {})).toEqual({
+      text: '',
+      color: ''
+    })
+  })
+
+  it('handles SHOW_TOAST', () => {
+    expect(
+      reducer({}, {
+        type: Types.SHOW_TOAST,
+        text: 'Correct!',
+        color: 'green'
+      })
+    ).toEqual({
+      text: 'Correct!',
+      color: 'green'
+    })
+
+    expect(
+      reducer({
+        text: 'Correct!',
+        color: 'green'
+      }, {
+        type: Types.SHOW_TOAST,
+        text: 'Incorrect..',
+        color: 'red'
+      })
+    ).toEqual({
+      text: 'Incorrect..',
+      color: 'red'
     })
   })
 })
