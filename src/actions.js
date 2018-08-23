@@ -11,7 +11,6 @@ import {
   SET_OPTIONS,
   ADD_GUESS,
   INCREMENT_SCORE,
-  DECREMENT_SCORE,
   SHOW_TOAST,
   HIDE_TOAST
 } from './constants/actionTypes'

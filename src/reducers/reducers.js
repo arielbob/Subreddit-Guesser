@@ -11,7 +11,6 @@ import {
   SET_OPTIONS,
   ADD_GUESS,
   INCREMENT_SCORE,
-  DECREMENT_SCORE,
   SHOW_TOAST,
   HIDE_TOAST
 } from '../constants/actionTypes'
@@ -131,8 +130,6 @@ export function score(state = 0, action) {
   switch (action.type) {
     case INCREMENT_SCORE:
       return state + 1
-    case DECREMENT_SCORE:
-      return state - 1;
     case RESET_GAME:
       return 0
     default:
