@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux'
-
 import {
   ADD_QUESTION,
   GENERATE_QUESTION,
@@ -16,9 +14,9 @@ import {
   DECREMENT_SCORE,
   SHOW_TOAST,
   HIDE_TOAST
-} from './constants/actionTypes'
+} from '../constants/actionTypes'
 
-function errorMessage(state = '', action) {
+export function errorMessage(state = '', action) {
   const { type, error } = action
 
   switch (type) {
@@ -33,7 +31,7 @@ function errorMessage(state = '', action) {
   return state
 }
 
-function currentQuestionId(state = 0, action) {
+export function currentQuestionId(state = 0, action) {
   switch (action.type) {
     case CHANGE_QUESTION_ID:
       return action.id
@@ -44,7 +42,7 @@ function currentQuestionId(state = 0, action) {
   }
 }
 
-function question(state = {
+export function question(state = {
   subreddit: '',
   imageUrl: '',
   guess: '',
@@ -74,7 +72,7 @@ function question(state = {
 // we use an object to hold each question object with the key being the id of the question
 // indexing questions is much simpler + faster this way and allows us to easily prevent
 // race conditions with fetches
-function questionsById(state = {}, action) {
+export function questionsById(state = {}, action) {
   switch (action.type) {
     case ADD_GUESS:
     case GENERATE_QUESTION:
@@ -89,7 +87,7 @@ function questionsById(state = {}, action) {
   }
 }
 
-function questionIds(state = [], action) {
+export function questionIds(state = [], action) {
   switch (action.type) {
     case ADD_QUESTION:
       return state.concat(action.id)
@@ -100,7 +98,7 @@ function questionIds(state = [], action) {
   }
 }
 
-function cachedImagesBySubreddit(state = {}, action) {
+export function cachedImagesBySubreddit(state = {}, action) {
   let newState
   switch (action.type) {
     case RECEIVE_UNSEEN:
@@ -119,7 +117,7 @@ function cachedImagesBySubreddit(state = {}, action) {
   }
 }
 
-function options(state = [], action) {
+export function options(state = [], action) {
   switch (action.type) {
     case SET_OPTIONS:
       return action.options
@@ -128,7 +126,7 @@ function options(state = [], action) {
   }
 }
 
-function score(state = 0, action) {
+export function score(state = 0, action) {
   switch (action.type) {
     case INCREMENT_SCORE:
       return state + 1
@@ -141,7 +139,7 @@ function score(state = 0, action) {
   }
 }
 
-function isFetching(state = false, action) {
+export function isFetching(state = false, action) {
   switch (action.type) {
     case FETCH_POSTS:
       return true
@@ -153,7 +151,7 @@ function isFetching(state = false, action) {
   }
 }
 
-function isToastVisible(state = false, action) {
+export function isToastVisible(state = false, action) {
   switch (action.type) {
     case SHOW_TOAST:
       return true
@@ -164,7 +162,7 @@ function isToastVisible(state = false, action) {
   }
 }
 
-function toast(state = {
+export function toast(state = {
   text: '',
   color: '',
 }, action) {
@@ -178,18 +176,3 @@ function toast(state = {
       return state
   }
 }
-
-const rootReducer = combineReducers({
-  currentQuestionId,
-  questionsById,
-  questionIds,
-  cachedImagesBySubreddit,
-  options,
-  score,
-  isFetching,
-  isToastVisible,
-  toast,
-  errorMessage
-})
-
-export default rootReducer
