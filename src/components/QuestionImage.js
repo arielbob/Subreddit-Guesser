@@ -26,8 +26,7 @@ class QuestionImage extends React.Component {
           <ErrorMessage message={error} onRetry={onRetryClick} /> :
           <div className={
             'question-image__container ' +
-            (isFetching || this.state.isLoading ? 'question-image__container--shimmer ' : '') +
-            (!src ? 'question-image__container--has-placeholder' : '')}>
+            (isFetching || this.state.isLoading ? 'question-image__container--shimmer ' : '')}>
             <PreloadedImage
               src={src}
               className='question-image__image'

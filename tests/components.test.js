@@ -127,17 +127,6 @@ describe('QuestionImage component', () => {
     ).toBe(true)
   })
 
-  it('renders placeholder when there is no src prop', () => {
-    const props = {
-      src: ''
-    }
-    const enzymeWrapper = setup(props)
-
-    expect(
-      enzymeWrapper.find('.question-image__container').hasClass('question-image__container--has-placeholder')
-    ).toBe(true)
-  })
-
   it('sets state to false when handleLoad is called', () => {
     const enzymeWrapper = setup({})
     enzymeWrapper.setState({ isLoading: true })
