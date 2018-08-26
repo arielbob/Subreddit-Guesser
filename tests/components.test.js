@@ -3,6 +3,7 @@ import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import QuestionCard from '../src/components/QuestionCard'
 import QuestionImage from '../src/components/QuestionImage'
+import PreloadedImage from '../src/components/PreloadedImage'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -145,5 +146,92 @@ describe('QuestionImage component', () => {
     expect(
       enzymeWrapper.state().isLoading
     ).toBe(false)
+  })
+})
+
+describe('PreloadedImage component' , () => {
+  const setup = (props) => mount(<PreloadedImage {...props} />)
+
+  it('renders self and subcomponents', () => {
+    const enzymeWrapper = setup({
+      src: 'a.png'
+    })
+    enzymeWrapper.setState({ isLoading: false })
+
+    expect(
+      enzymeWrapper.find('img').exists()
+    ).toBe(true)
+  })
+
+  it('renders PlaceholderComponent when there is no src', () => {
+    const PlaceholderComponent = () => (<div>Placeholder</div>)
+    const enzymeWrapper = setup({
+      src: null,
+      PlaceholderComponent
+    })
+
+    expect(
+      enzymeWrapper.find('PlaceholderComponent').exists()
+    ).toBe(true)
+  })
+
+  it('renders PlaceholderComponent when there is a loading src and no previous image', () => {
+    const PlaceholderComponent = () => (<div>Placeholder</div>)
+    const enzymeWrapper = setup({
+      src: 'a.png',
+      PlaceholderComponent
+    })
+
+    expect(
+      enzymeWrapper.find('PlaceholderComponent').exists()
+    ).toBe(true)
+  })
+
+  it('renders previous image when src changes and is loading', () => {
+    const enzymeWrapper = setup({
+      src: 'a.png'
+    })
+    enzymeWrapper.setState({ isLoading: false })
+    enzymeWrapper.setProps({ src: 'b.jpg' })
+
+    expect(
+      enzymeWrapper.find('img').props().src
+    ).toBe('a.png')
+  })
+
+  it('renders src when it is loaded', () => {
+    const enzymeWrapper = setup({
+      src: 'a.png'
+    })
+    enzymeWrapper.setState({ isLoading: false })
+
+    expect(
+      enzymeWrapper.find('img').props().src
+    ).toBe('a.png')
+  })
+
+  it('does not set previous image when the current src has not yet been loaded', () => {
+    const enzymeWrapper = setup({
+      src: 'a.png'
+    })
+    enzymeWrapper.setState({ isLoading: false })
+    enzymeWrapper.setProps({ src: 'b.jpg' })
+    enzymeWrapper.setProps({ src: 'c.gif' })
+
+    expect(
+      enzymeWrapper.state().prevImage
+    ).toBe('a.png')
+  })
+
+  it('calls onLoad when the image loads', () => {
+    const enzymeWrapper = setup({
+      src: 'a.png',
+      onLoad: jest.fn()
+    })
+
+    enzymeWrapper.instance()._imgToLoad.onload()
+    expect(
+      enzymeWrapper.props().onLoad.mock.calls.length
+    ).toBe(1)
   })
 })
