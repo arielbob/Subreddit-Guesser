@@ -4,6 +4,8 @@ import Adapter from 'enzyme-adapter-react-16'
 import QuestionCard from '../src/components/QuestionCard'
 import QuestionImage from '../src/components/QuestionImage'
 import PreloadedImage from '../src/components/PreloadedImage'
+import OptionList from '../src/components/OptionList'
+import ErrorMessage from '../src/components/ErrorMessage'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -222,5 +224,65 @@ describe('PreloadedImage component' , () => {
     expect(
       enzymeWrapper.props().onLoad.mock.calls.length
     ).toBe(1)
+  })
+})
+
+describe('OptionList component', () => {
+  const setup = (props) => mount(<OptionList {...props} />)
+
+  it('renders self and subcomponents', () => {
+    const props = {
+      options: ['a', 'b', 'c', 'd', 'e'],
+      isVisible: true,
+      onOptionClick: jest.fn()
+    }
+    const enzymeWrapper = setup(props)
+
+    expect(
+      enzymeWrapper.find('.options').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.options__option').length
+    ).toBe(5)
+    expect(
+      enzymeWrapper.find('.options__btn').length
+    ).toBe(5)
+    enzymeWrapper.find('.options__btn').forEach((button, idx) => {
+      expect(button.props().value).toBe(props.options[idx])
+      expect(button.text()).toBe(props.options[idx])
+    })
+  })
+
+  it('does not render when isVisible is false', () => {
+    const props = {
+      options: ['a', 'b', 'c', 'd', 'e'],
+      isVisible: false,
+      onOptionClick: jest.fn()
+    }
+    const enzymeWrapper = setup(props)
+
+    expect(
+      enzymeWrapper.find('.options').exists()
+    ).toBe(false)
+  })
+
+  it('calls onOptionClick when an option button is clicked', () => {
+    const props = {
+      options: ['a', 'b', 'c', 'd', 'e'],
+      isVisible: true,
+      onOptionClick: jest.fn()
+    }
+    const enzymeWrapper = setup(props)
+
+    enzymeWrapper.find('button').forEach((button) => {
+      button.simulate('click')
+    })
+    const mockOptionClick = props.onOptionClick
+    expect(mockOptionClick.mock.calls.length).toBe(5)
+    expect(mockOptionClick.mock.calls[0][0]).toBe('a')
+    expect(mockOptionClick.mock.calls[1][0]).toBe('b')
+    expect(mockOptionClick.mock.calls[2][0]).toBe('c')
+    expect(mockOptionClick.mock.calls[3][0]).toBe('d')
+    expect(mockOptionClick.mock.calls[4][0]).toBe('e')
   })
 })

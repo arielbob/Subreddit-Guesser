@@ -21,7 +21,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...ownProps,
     options,
     isVisible,
-    onClick: (guessValue) => {
+    onOptionClick: (guessValue) => {
       dispatch(addGuess(currentQuestionId, guessValue))
       dispatch(changeQuestionId(currentQuestionId + 1))
     }
