@@ -286,3 +286,39 @@ describe('OptionList component', () => {
     expect(mockOptionClick.mock.calls[4][0]).toBe('e')
   })
 })
+
+describe('ErrorMessage component', () => {
+  const setup = (props) => mount(<ErrorMessage {...props} />)
+
+  it('renders self and subcomponents', () => {
+    const props = {
+      message: 'Error',
+      onRetry: jest.fn()
+    }
+    const enzymeWrapper = setup(props)
+
+    expect(
+      enzymeWrapper.find('.error').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.error__message').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.error__message').text()
+    ).toBe('Error')
+    expect(
+      enzymeWrapper.find('.error__retry-btn').exists()
+    ).toBe(true)
+  })
+
+  it('calls onRetry when retry button is clicked', () => {
+    const props = {
+      message: 'Error',
+      onRetry: jest.fn()
+    }
+    const enzymeWrapper = setup(props)
+
+    enzymeWrapper.find('button').simulate('click')
+    expect(props.onRetry.mock.calls.length).toBe(1)
+  })
+})
