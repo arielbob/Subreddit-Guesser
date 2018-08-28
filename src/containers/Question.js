@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import {
   addNewQuestion,
   generateNewQuestion,
@@ -10,11 +11,11 @@ import {
 } from '../actions'
 import QuestionImage from '../components/QuestionImage'
 
-class Question extends React.Component {
+export class Question extends React.Component {
   componentDidMount() {
-    const { dispatch, currentQuestionId } = this.props
-    dispatch(addNewQuestion(currentQuestionId))
-    this.populateQuestionAndOptions(currentQuestionId)
+    const { addNewQuestion, currentQuestionId } = this.props
+    addNewQuestion(currentQuestionId)
+    this._populateQuestionAndOptions(currentQuestionId)
   }
 
   componentDidUpdate(prevProps) {
@@ -27,24 +28,24 @@ class Question extends React.Component {
     // the way new questions are added is that currentQuestionId is changed
     // if there is no question at that id, then we add that id to questionIds and
     // generate a new question at questionsById[id]
-    const { dispatch, currentQuestionId, question } = this.props
-    if (!this.props.question) {
-      dispatch(addNewQuestion(currentQuestionId))
-      this.populateQuestionAndOptions(currentQuestionId)
+    const { addNewQuestion, currentQuestionId, question } = this.props
+    if (!question) {
+      addNewQuestion(currentQuestionId)
+      this._populateQuestionAndOptions(currentQuestionId)
     }
   }
 
-  populateQuestionAndOptions(id) {
-    const { dispatch } = this.props
-    dispatch(generateNewQuestion(id))
-    dispatch(loadImageForQuestion(id))
-    dispatch(setOptions(id))
+  _populateQuestionAndOptions(id) {
+    const { generateNewQuestion, loadImageForQuestion, setOptions } = this.props
+    generateNewQuestion(id)
+    loadImageForQuestion(id)
+    setOptions(id)
   }
 
   handleRetry() {
-    const { dispatch, currentQuestionId } = this.props
-    dispatch(resetErrorMessage())
-    this.populateQuestionAndOptions(currentQuestionId)
+    const { resetErrorMessage, currentQuestionId } = this.props
+    resetErrorMessage()
+    this._populateQuestionAndOptions(currentQuestionId)
   }
 
   render() {
@@ -72,4 +73,13 @@ const mapStateToProps = (state) => ({
   error: state.errorMessage
 })
 
-export default connect(mapStateToProps)(Question)
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  addNewQuestion,
+  generateNewQuestion,
+  loadImageForQuestion,
+  setOptions,
+  resetErrorMessage,
+  changeQuestionId
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question)
