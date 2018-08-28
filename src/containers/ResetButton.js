@@ -5,7 +5,7 @@ import {
 import Reset from '../components/Reset'
 
 const mapDispatchToProps = (dispatch) => ({
-  handleResetClick: () => {
+  onResetClick: () => {
     dispatch(resetGame())
   }
 })

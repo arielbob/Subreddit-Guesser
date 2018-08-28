@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class PreloadedImage extends React.Component {
   constructor() {
@@ -59,6 +60,17 @@ class PreloadedImage extends React.Component {
 
     return <img className={this.props.className} style={this.props.style} src={imgSrc}></img>
   }
+}
+
+PreloadedImage.propTypes = {
+  onLoad: PropTypes.func,
+  src: PropTypes.string,
+  PlaceholderComponent: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.element
+  ]),
+  className: PropTypes.string,
+  style: PropTypes.object
 }
 
 export default PreloadedImage

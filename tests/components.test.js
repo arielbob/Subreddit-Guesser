@@ -46,6 +46,7 @@ describe('QuestionCard component', () => {
 
   it('changes classes when a guess is correct/incorrect', () => {
     const props = {
+      imageUrl: 'a.png',
       subreddit: 'pics',
       guess: 'pics'
     }
@@ -78,7 +79,7 @@ describe('QuestionImage component', () => {
     const props = {
       src: 'a.png',
       isFetching: false,
-      error: false,
+      error: '',
       onRetryClick: jest.fn()
     }
     const enzymeWrapper = setup(props)
@@ -96,7 +97,9 @@ describe('QuestionImage component', () => {
 
   it('renders error message', () => {
     const props = {
-      error: true
+      isFetching: false,
+      error: 'Error',
+      onRetryClick: jest.fn()
     }
     const enzymeWrapper = setup(props)
 
@@ -105,7 +108,9 @@ describe('QuestionImage component', () => {
 
   it('renders shimmer', () => {
     const props = {
-      isFetching: true
+      isFetching: true,
+      error: '',
+      onRetryClick: jest.fn()
     }
     const enzymeWrapper = setup(props)
 
@@ -124,6 +129,9 @@ describe('QuestionImage component', () => {
   it('sets isLoading when src changes', () => {
     const props = {
       src: 'a.jpg',
+      isFetching: false,
+      error: '',
+      onRetryClick: jest.fn()
     }
     const enzymeWrapper = setup(props)
 
@@ -134,7 +142,12 @@ describe('QuestionImage component', () => {
   })
 
   it('sets state to false when handleLoad is called', () => {
-    const enzymeWrapper = setup({})
+    const props = {
+      isFetching: false,
+      error: '',
+      onRetryClick: jest.fn()
+    }
+    const enzymeWrapper = setup(props)
     enzymeWrapper.setState({ isLoading: true })
 
     enzymeWrapper.instance().handleLoad()
@@ -438,7 +451,7 @@ describe('Reset component', () => {
 
   it('renders self and subcomponents', () => {
     const enzymeWrapper = setup({
-      handleResetClick: jest.fn()
+      onResetClick: jest.fn()
     })
 
     expect(
@@ -449,14 +462,14 @@ describe('Reset component', () => {
     ).toBe(true)
   })
 
-  it('calls handleResetClick when reset button is clicked', () => {
+  it('calls onResetClick when reset button is clicked', () => {
     const props = {
-      handleResetClick: jest.fn()
+      onResetClick: jest.fn()
     }
     const enzymeWrapper = setup(props)
 
     enzymeWrapper.find('button').simulate('click')
-    expect(props.handleResetClick.mock.calls.length).toBe(1)
+    expect(props.onResetClick.mock.calls.length).toBe(1)
   })
 })
 

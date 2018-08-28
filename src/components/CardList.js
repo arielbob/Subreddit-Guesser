@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import QuestionCard from './QuestionCard'
 
 const CardList = ({ questionIds, currentQuestionId, questionsById }) => {
@@ -21,6 +22,17 @@ const CardList = ({ questionIds, currentQuestionId, questionsById }) => {
       </div>
     </div>
   )
+}
+
+CardList.propTypes = {
+  questionIds: PropTypes.array.isRequired,
+  currentQuestionId: PropTypes.number.isRequired,
+  questionsById: PropTypes.objectOf(PropTypes.shape({
+    subreddit: PropTypes.string.isRequired,
+    guess: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired
+  })).isRequired
 }
 
 export default CardList

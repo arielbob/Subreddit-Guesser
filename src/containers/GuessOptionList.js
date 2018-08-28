@@ -5,13 +5,11 @@ import {
 } from '../actions'
 import OptionList from '../components/OptionList'
 
-const mapStateToProps = (state) => {
-  return {
-    currentQuestionId: state.currentQuestionId,
-    options: state.options,
-    isVisible: !state.errorMessage && !state.isFetching
-  }
-}
+const mapStateToProps = (state) => ({
+  currentQuestionId: state.currentQuestionId,
+  options: state.options,
+  isVisible: !state.errorMessage && !state.isFetching
+})
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { currentQuestionId, options, isVisible } = stateProps

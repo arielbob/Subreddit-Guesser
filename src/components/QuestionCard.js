@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const QuestionCard = ({
   imageUrl,
@@ -18,6 +19,12 @@ const QuestionCard = ({
       </div>
     </div>
   )
+}
+
+QuestionCard.propTypes = {
+  imageUrl: PropTypes.string.isRequired,
+  subreddit: PropTypes.string.isRequired,
+  guess: PropTypes.string.isRequired
 }
 
 export default QuestionCard

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const OptionList = ({ options, isVisible, onOptionClick }) => {
   return (
@@ -13,6 +14,12 @@ const OptionList = ({ options, isVisible, onOptionClick }) => {
       })}
     </ul>
   )
+}
+
+OptionList.propTypes = {
+  options: PropTypes.array.isRequired,
+  isVisible: PropTypes.bool.isRequired,
+  onOptionClick: PropTypes.func.isRequired
 }
 
 export default OptionList

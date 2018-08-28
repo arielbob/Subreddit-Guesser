@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
@@ -64,6 +65,24 @@ export class Question extends React.Component {
       </section>
     )
   }
+}
+
+Question.propTypes = {
+  currentQuestionId: PropTypes.number.isRequired,
+  question: PropTypes.shape({
+    subreddit: PropTypes.string.isRequired,
+    guess: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired
+  }),
+  isFetching: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  addNewQuestion: PropTypes.func.isRequired,
+  generateNewQuestion: PropTypes.func.isRequired,
+  loadImageForQuestion: PropTypes.func.isRequired,
+  setOptions: PropTypes.func.isRequired,
+  resetErrorMessage: PropTypes.func.isRequired,
+  changeQuestionId: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({

@@ -23,30 +23,6 @@ const store = createStore(
   )
 )
 
-// TODO: write tests
-
-// import { generateNewQuestion, loadImageForQuestion, addGuess, changeQuestionId, resetGame } from './actions'
-// let currentQuestionId = store.getState().currentQuestionId
-// store.dispatch(generateNewQuestion(currentQuestionId))
-// store.dispatch(loadImageForQuestion(currentQuestionId))
-// store.dispatch(addGuess(currentQuestionId, 'malefashion'))
-//
-// setTimeout(() => {
-//   store.dispatch(changeQuestionId(currentQuestionId + 1))
-//   currentQuestionId = store.getState().currentQuestionId
-//   store.dispatch(generateNewQuestion(currentQuestionId))
-//   store.dispatch(loadImageForQuestion(currentQuestionId))
-//   store.dispatch(addGuess(currentQuestionId, 'me_irl'))
-// }, 2000)
-//
-// setTimeout(() => {
-//   store.dispatch(changeQuestionId(currentQuestionId + 1))
-//   currentQuestionId = store.getState().currentQuestionId
-//   store.dispatch(generateNewQuestion(currentQuestionId))
-//   store.dispatch(resetGame())
-// }, 4000)
-
-// TODO: refactor containers and components to use new state
 render(
   <Provider store={store}>
     <Root />

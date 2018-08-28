@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import ErrorMessage from './ErrorMessage'
 import PreloadedImage from './PreloadedImage'
 
@@ -37,6 +38,13 @@ class QuestionImage extends React.Component {
       </div>
     )
   }
+}
+
+QuestionImage.propTypes = {
+  src: PropTypes.string,
+  isFetching: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  onRetryClick: PropTypes.func.isRequired
 }
 
 export default QuestionImage

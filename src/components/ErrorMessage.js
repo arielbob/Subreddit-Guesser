@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const ErrorMessage = ({ message, onRetry }) => {
   return (
@@ -7,6 +8,11 @@ const ErrorMessage = ({ message, onRetry }) => {
       <button className='error__retry-btn' onClick={() => onRetry()}>Retry</button>
     </div>
   )
+}
+
+ErrorMessage.propTypes = {
+  message: PropTypes.string.isRequired,
+  onRetry: PropTypes.func.isRequired
 }
 
 export default ErrorMessage

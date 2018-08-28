@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group'
 
 const Toast = ({ isVisible, text, color }) => {
@@ -15,6 +17,12 @@ const Toast = ({ isVisible, text, color }) => {
       </div>
     </CSSTransition>
   )
+}
+
+Toast.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired
 }
 
 export default Toast
