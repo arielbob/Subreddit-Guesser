@@ -1,16 +1,8 @@
-import React from 'react'
 import { connect } from 'react-redux'
 import {
   resetGame
 } from '../actions'
-
-const ResetButton = ({ handleResetClick }) => {
-  return (
-    <div className='reset'>
-      <button className='reset__btn' onClick={() => handleResetClick()}>Reset</button>
-    </div>
-  )
-}
+import Reset from '../components/Reset'
 
 const mapDispatchToProps = (dispatch) => ({
   handleResetClick: () => {
@@ -18,4 +10,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-export default connect(null, mapDispatchToProps)(ResetButton)
+export default connect(null, mapDispatchToProps)(Reset)
