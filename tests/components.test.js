@@ -11,7 +11,6 @@ import Reset from '../src/components/Reset'
 import Score from '../src/components/Score'
 import Toast from '../src/components/Toast'
 
-
 Enzyme.configure({ adapter: new Adapter() })
 
 describe('QuestionCard component', () => {
@@ -481,5 +480,34 @@ describe('Score component', () => {
     expect(
       enzymeWrapper.find('.score__text').text()
     ).toBe('3')
+  })
+})
+
+describe('Toast component', () => {
+  const setup = (props) => mount(<Toast {...props} />)
+
+  it('renders self and subcomponents', () => {
+    const props = {
+      isVisible: true,
+      text: 'Correct!',
+      color: 'green'
+    }
+    const enzymeWrapper = setup(props)
+
+    expect(
+      enzymeWrapper.find('.toast').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.toast__message').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.toast__message').hasClass('toast__message--green')
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.toast__text').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.toast__text').text()
+    ).toBe('Correct!')
   })
 })
