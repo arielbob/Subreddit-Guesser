@@ -12,7 +12,6 @@ class CardList extends React.Component {
       <div className='question-history'>
         <div className='question-history__list'>
           {
-            history.length > 0 &&
             <ul>
               {historyIds.map(id => (
                 <li className='question-history__item' key={id}>

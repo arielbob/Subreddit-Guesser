@@ -6,6 +6,7 @@ import QuestionImage from '../src/components/QuestionImage'
 import PreloadedImage from '../src/components/PreloadedImage'
 import OptionList from '../src/components/OptionList'
 import ErrorMessage from '../src/components/ErrorMessage'
+import CardList from '../src/components/CardList'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -320,5 +321,111 @@ describe('ErrorMessage component', () => {
 
     enzymeWrapper.find('button').simulate('click')
     expect(props.onRetry.mock.calls.length).toBe(1)
+  })
+})
+
+describe('CardList component', () => {
+  const setup = (props) => mount(<CardList {...props} />)
+
+  it('renders self and subcomponents' , () => {
+    const props = {
+      questionIds: [0, 1],
+      currentQuestionId: 1,
+      questionsById: {
+        0: {
+          subreddit: 'pics',
+          guess: 'pics',
+          imageUrl: 'a.png',
+          id: 0
+        },
+        1: {
+          subreddit: 'pics',
+          guess: 'malefashion',
+          imageUrl: 'b.jpg',
+          id: 1
+        }
+      }
+    }
+    const enzymeWrapper = setup(props)
+
+    expect(
+      enzymeWrapper.find('.question-history').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.question-history__list').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.question-history__item').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('QuestionCard').exists()
+    ).toBe(true)
+  })
+
+  it('renders all but the current question', () => {
+    const props = {
+      questionIds: [0, 1, 2],
+      currentQuestionId: 2,
+      questionsById: {
+        0: {
+          subreddit: 'pics',
+          guess: 'pics',
+          imageUrl: 'a.png',
+          id: 0
+        },
+        1: {
+          subreddit: 'pics',
+          guess: 'malefashion',
+          imageUrl: 'b.jpg',
+          id: 1
+        },
+        2: {
+          subreddit: 'oldschoolcool',
+          guess: 'malefashion',
+          imageUrl: 'c.gif',
+          id: 2
+        }
+      }
+    }
+    const enzymeWrapper = setup(props)
+
+    expect(
+      enzymeWrapper.find('.question-history__item').length
+    ).toBe(2)
+  })
+
+  it('renders questions in reverse order', () => {
+    const props = {
+      questionIds: [0, 1, 2],
+      currentQuestionId: 2,
+      questionsById: {
+        0: {
+          subreddit: 'pics',
+          guess: 'pics',
+          imageUrl: 'a.png',
+          id: 0
+        },
+        1: {
+          subreddit: 'pics',
+          guess: 'malefashion',
+          imageUrl: 'b.jpg',
+          id: 1
+        },
+        2: {
+          subreddit: 'oldschoolcool',
+          guess: 'malefashion',
+          imageUrl: 'c.gif',
+          id: 2
+        }
+      }
+    }
+    const enzymeWrapper = setup(props)
+
+    expect(
+      enzymeWrapper.find('QuestionCard').at(0).props().id
+    ).toBe(1)
+    expect(
+      enzymeWrapper.find('QuestionCard').at(1).props().id
+    ).toBe(0)
   })
 })
