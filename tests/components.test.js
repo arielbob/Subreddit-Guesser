@@ -460,3 +460,26 @@ describe('Reset component', () => {
     expect(props.handleResetClick.mock.calls.length).toBe(1)
   })
 })
+
+describe('Score component', () => {
+  const setup = (props) => mount(<Score {...props} />)
+
+  it('renders self and subcomponents', () => {
+    const enzymeWrapper = setup({
+      score: 3
+    })
+
+    expect(
+      enzymeWrapper.find('.score').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.score__title').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.score__text').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.score__text').text()
+    ).toBe('3')
+  })
+})
