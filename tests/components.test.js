@@ -7,6 +7,10 @@ import PreloadedImage from '../src/components/PreloadedImage'
 import OptionList from '../src/components/OptionList'
 import ErrorMessage from '../src/components/ErrorMessage'
 import CardList from '../src/components/CardList'
+import Reset from '../src/components/Reset'
+import Score from '../src/components/Score'
+import Toast from '../src/components/Toast'
+
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -427,5 +431,32 @@ describe('CardList component', () => {
     expect(
       enzymeWrapper.find('QuestionCard').at(1).props().id
     ).toBe(0)
+  })
+})
+
+describe('Reset component', () => {
+  const setup = (props) => mount(<Reset {...props} />)
+
+  it('renders self and subcomponents', () => {
+    const enzymeWrapper = setup({
+      handleResetClick: jest.fn()
+    })
+
+    expect(
+      enzymeWrapper.find('.reset').exists()
+    ).toBe(true)
+    expect(
+      enzymeWrapper.find('.reset__btn').exists()
+    ).toBe(true)
+  })
+
+  it('calls handleResetClick when reset button is clicked', () => {
+    const props = {
+      handleResetClick: jest.fn()
+    }
+    const enzymeWrapper = setup(props)
+
+    enzymeWrapper.find('button').simulate('click')
+    expect(props.handleResetClick.mock.calls.length).toBe(1)
   })
 })
