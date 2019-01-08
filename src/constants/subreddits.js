@@ -1,10 +1,16 @@
 const SUBREDDITS = [
-  'me_irl',
+  'NotMyJob',
   'pics',
-  'oldschoolcool',
-  'designporn',
+  'OldSchoolCool',
   'malefashion',
-  'earthporn'
+  'EarthPorn',
+  'mildlyinfuriating',
+  'mildlyinteresting',
+  'DesignPorn',
+  'CrappyDesign',
+  'PerfectTiming',
+  'BreadStapledToTrees',
+  'AccidentalRenaissance'
 ]
 
 export default SUBREDDITS
