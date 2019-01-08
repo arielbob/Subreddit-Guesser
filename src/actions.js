@@ -16,30 +16,6 @@ import {
 } from './constants/actionTypes'
 import SUBREDDITS from './constants/subreddits'
 
-// TODO: implement guessing                             - DONE
-// TODO: implement changing the question after guessing - DONE
-// TODO: implement question history                     - DONE
-//  probably should just be a new action that accepts as an argument state.question
-//  action creator should also add a property of isCorrect
-// TODO: implement toasts - DONE
-// TODO: implement re-checking for posts if none are found - DONE
-//  maybe just do while(!posts.length) rather than recursively?
-// TODO: implement re-checking for posts if the image has already been seen - DONE
-// TODO: add unique keys ot list elements in history - DONE
-// TODO: add the ability to reset the game - DONE
-// TODO: add error handling, especially in the fetchImagePost function - DONE
-//  maybe do it so like if count > some big number, then err() or whatever it is in promises
-// TODO: clean up error handling for fetchImagePost and add string constants - DONE
-// TODO: go through TODO's in loadImageAndOptions() function - DONE
-// TODO: convert functions to arrow functions - DONE
-// TODO: remove unused constants, functions, etc. - DONE
-// TODO: maybe change the reddit api request to get from hot instead of new? - DONE
-//  would maybe filter out some inappropriate posts... lol
-
-// we are fine in using this
-// actions do not necessarily need to be pure
-// i think it's just better if they are for testing or something
-// but they aren't always pure which can be seen in the cases where we need random numbers or api calls
 const _randomElem = (arr) => (arr[Math.floor(Math.random() * arr.length)])
 
 const _generateOptions = (subreddit, numOptions) => {
