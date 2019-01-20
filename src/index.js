@@ -14,12 +14,11 @@ import {
 import normalize from 'normalize.css'
 import style from './styles/style.scss'
 
-const loggerMiddleware = createLogger()
+// const loggerMiddleware = createLogger()
 const store = createStore(
   rootReducer,
   applyMiddleware(
-    thunk,
-    loggerMiddleware
+    thunk
   )
 )
 
