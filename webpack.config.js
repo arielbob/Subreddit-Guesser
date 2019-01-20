@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 const isDev = process.env.NODE_ENV.trim() !== 'production'
 
@@ -14,6 +15,11 @@ module.exports = {
 		filename: 'js/bundle.[hash].js',
 		path: path.resolve(__dirname, 'dist'),
 		publicPath: '/'
+	},
+	optimization: {
+		minimizer: [
+			!isDev && new TerserWebpackPlugin()
+		]
 	},
 	devtool: isDev && 'cheap-module-source-map',
 	module: {
